@@ -1,0 +1,243 @@
+unit depositslip;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, DB, DBAccess, MyAccess, Grids, DBGrids, CRGrid, NxCollection,
+  MemDS, StdCtrls, Mask, DBCtrls, NxEdit, ExtCtrls, CRDBGrid1;
+
+type
+  TDepositSlipForm = class(TForm)
+    Deposit: TMyQuery;
+    Depositdepositdate: TDateField;
+    DepositDescription: TStringField;
+    DepositAccountCode: TStringField;
+    DepositAccountDescription: TStringField;
+    Depositcoins: TFloatField;
+    DepositAmount: TFloatField;
+    NxButton1: TNxButton;
+    NxButton2: TNxButton;
+    NxButton3: TNxButton;
+    NxButton4: TNxButton;
+    dsDeposit: TMyDataSource;
+    NxHeaderPanel1: TNxHeaderPanel;
+    Label1: TLabel;
+    DBEdit1: TDBEdit;
+    Label2: TLabel;
+    DBEdit2: TDBEdit;
+    DBEdit3: TDBEdit;
+    Label4: TLabel;
+    DBEdit4: TDBEdit;
+    Label12: TLabel;
+    DBEdit12: TDBEdit;
+    DateFrom: TNxDatePicker;
+    Label13: TLabel;
+    DateTo: TNxDatePicker;
+    NxButton8: TNxButton;
+    DepositAmt1000: TCurrencyField;
+    DepositAmt500: TCurrencyField;
+    DepositAmt200: TCurrencyField;
+    DepositAmt100: TCurrencyField;
+    DepositAmt50: TCurrencyField;
+    DepositAmt20: TCurrencyField;
+    DepositCDCRDate: TDateField;
+    NxLinkLabel1: TNxLinkLabel;
+    NxLinkLabel2: TNxLinkLabel;
+    NxLinkLabel3: TNxLinkLabel;
+    DepositBankRemit: TStringField;
+    Label3: TLabel;
+    DBEdit5: TDBEdit;
+    DBRadioGroup1: TDBRadioGroup;
+    RadioGroup1: TRadioGroup;
+    Depositiddeposit: TLongWordField;
+    DepositD1000: TLongWordField;
+    DepositD500: TLongWordField;
+    DepositD200: TLongWordField;
+    DepositD100: TLongWordField;
+    DepositD50: TLongWordField;
+    DepositD20: TLongWordField;
+    CRDBGrid1: TCRDBGrid1;
+    DepositCollectorCode: TStringField;
+    procedure DBEdit1KeyPress(Sender: TObject; var Key: Char);
+    procedure NxButton1Click(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure NxButton8Click(Sender: TObject);
+    procedure NxButton2Click(Sender: TObject);
+    procedure NxButton3Click(Sender: TObject);
+    procedure DBEdit5Exit(Sender: TObject);
+    procedure DepositCalcFields(DataSet: TDataSet);
+    procedure NxButton4Click(Sender: TObject);
+    procedure NxLinkLabel1Click(Sender: TObject);
+    procedure NxLinkLabel2Click(Sender: TObject);
+    procedure NxLinkLabel3Click(Sender: TObject);
+    procedure DBEdit12KeyPress(Sender: TObject; var Key: Char);
+    procedure RadioGroup1Click(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+   Procedure SelectAccountFromForm(AccountString : String);
+  end;
+
+var
+  DepositSlipForm: TDepositSlipForm;
+
+implementation
+
+uses Data, DateUtils, ChartList;
+
+{$R *.dfm}
+
+Procedure TDepositSlipForm.SelectAccountFromForm;
+begin
+
+  If not Assigned(AccountChartForm) then
+  AccountChartForm := TAccountChartForm.Create(Application);
+  With AccountChartForm do
+   begin
+      MyChart.Close;
+      MyChart.ParamByName('code').Text        := '%'+AccountString+'%';
+      MyChart.ParamByName('description').Text := '%'+AccountString+'%';
+      MyChart.Open;
+   end;
+  AccountChartForm.ShowModal;
+
+  DepositAccountCode.Text        := AccountChartForm.MyChartCode.Text;
+  DepositAccountDescription.Text := AccountChartForm.MyChartDescription.Text;
+
+  AccountChartForm.MyChart.Close;
+end;
+
+procedure TDepositSlipForm.DBEdit1KeyPress(Sender: TObject; var Key: Char);
+begin
+  If Key = #13 then
+    begin
+      Perform(CM_DIALOGKEY,VK_Tab,0);
+      Key := #0;
+    end;
+end;
+
+procedure TDepositSlipForm.NxButton1Click(Sender: TObject);
+begin
+   NxHeaderPanel1.Left    := 124;
+   NxHeaderPanel1.Top     := 50;
+   NxHeaderPanel1.BringToFront;
+   NxHeaderPanel1.Visible := True;
+   Deposit.Append;
+   Depositdepositdate.AsDateTime := DateFrom.AsDateTime;
+   DepositCDCRDate.AsDateTime    := DateFrom.AsDateTime;
+   DBEdit1.SetFocus;
+end;
+
+procedure TDepositSlipForm.FormShow(Sender: TObject);
+begin
+  DateFrom.Date := Now;
+  DateTo.Date   := Now;
+  Deposit.MacroByName('depositdate').Active := True;
+  Deposit.ParamByName('DateFrom').AsDate := DateFrom.Date;
+  Deposit.ParamByName('DateTo').AsDate   := DateTo.Date;
+  Deposit.Open;
+end;
+
+procedure TDepositSlipForm.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+  Deposit.Close;
+  Action := caFree;
+  DepositSlipForm := Nil;
+end;
+
+procedure TDepositSlipForm.NxButton8Click(Sender: TObject);
+begin
+  Deposit.Close;
+  Deposit.ParamByName('DateFrom').AsDate := DateFrom.Date;
+  Deposit.ParamByName('DateTo').AsDate   := DateTo.Date;
+  Deposit.Open;
+end;
+
+procedure TDepositSlipForm.NxButton2Click(Sender: TObject);
+begin
+   NxHeaderPanel1.Left    := 124;
+   NxHeaderPanel1.Top     := 50;
+   NxHeaderPanel1.BringToFront;
+   NxHeaderPanel1.Visible := True;
+   Deposit.Edit;
+   DBEdit1.SetFocus;
+end;
+
+procedure TDepositSlipForm.NxButton3Click(Sender: TObject);
+begin
+  if (MessageDlg('Confirm delete', mtConfirmation, [mbYes, mbNo], 0) = mrNo) then exit;
+
+  Deposit.Delete;
+  Deposit.Refresh;
+
+end;
+
+procedure TDepositSlipForm.DBEdit5Exit(Sender: TObject);
+begin
+   DepositAmount.AsCurrency := DepositAmt1000.AsCurrency +
+                               DepositAmt500.AsCurrency +
+                               DepositAmt200.AsCurrency +
+                               DepositAmt100.AsCurrency +
+                               DepositAmt50.AsCurrency +
+                               DepositAmt20.AsCurrency +
+                               Depositcoins.AsCurrency;
+end;
+
+procedure TDepositSlipForm.DepositCalcFields(DataSet: TDataSet);
+begin
+  DepositAmt1000.AsCurrency := DepositD1000.AsInteger * 1000;
+  DepositAmt500.AsCurrency  := DepositD500.AsInteger * 500;
+  DepositAmt200.AsCurrency  := DepositD200.AsInteger * 200;
+  DepositAmt100.AsCurrency  := DepositD100.AsInteger * 100;
+  DepositAmt50.AsCurrency   := DepositD50.AsInteger * 50;
+  DepositAmt20.AsCurrency   := DepositD20.AsInteger * 20;
+end;
+
+procedure TDepositSlipForm.NxButton4Click(Sender: TObject);
+begin
+   Close;
+end;
+
+procedure TDepositSlipForm.NxLinkLabel1Click(Sender: TObject);
+begin
+  DepositCollectorCode.Text :=
+  Deposit.Post;
+  NxHeaderPanel1.Visible := False;
+end;
+
+procedure TDepositSlipForm.NxLinkLabel2Click(Sender: TObject);
+begin
+  Deposit.Cancel;
+  NxHeaderPanel1.Visible := False;
+end;
+
+procedure TDepositSlipForm.NxLinkLabel3Click(Sender: TObject);
+begin
+  SelectAccountFromForm(DBEdit3.Text);
+  DBEdit12.SetFocus;
+end;
+
+procedure TDepositSlipForm.DBEdit12KeyPress(Sender: TObject;
+  var Key: Char);
+begin
+  If Key = #13 then NxLinkLabel1Click(self);
+end;
+
+procedure TDepositSlipForm.RadioGroup1Click(Sender: TObject);
+begin
+  If RadioGroup1.ItemIndex = 0 then
+    begin
+      Deposit.MacroByName('depositdate').Active := True;
+      Deposit.MacroByName('dcprdate').Active    := False;
+    end else
+    begin
+      Deposit.MacroByName('depositdate').Active := False;
+      Deposit.MacroByName('dcprdate').Active    := True;
+    end;
+end;
+
+end.

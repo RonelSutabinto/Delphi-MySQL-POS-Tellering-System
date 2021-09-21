@@ -1,0 +1,426 @@
+procedure TTellerPOSForm.PDJSillyLabel7Click(Sender: TObject);
+Var
+PageCount,LineCount,DetailCount,HeadSW : Word;
+TArea                        : Array[1..30] of String[3];
+TCollectionAmount            : Array[1..30] of Currency;
+TCollectionTransformerRental : Array[1..30] of Currency;
+TCollectionLLP               : Array[1..30] of Currency;
+TCollectionUCNPCSD           : Array[1..30] of Currency;
+TCollectionUCNPCSCC          : Array[1..30] of Currency;
+TCollectionUCDUSCC           : Array[1..30] of Currency;
+TCollectionUCME              : Array[1..30] of Currency;
+TCollectionUCETR             : Array[1..30] of Currency;
+TCollectionUCEC              : Array[1..30] of Currency;
+TCollectionUCCSR             : Array[1..30] of Currency;
+TCollectionKwhr              : Array[1..30] of Currency;
+TCollectionVAT               : Array[1..30] of Currency;
+TCollectionVATDist           : Array[1..30] of Currency;
+TCollectionVATGenCO          : Array[1..30] of Currency;
+TCollectionVATTransCO        : Array[1..30] of Currency;
+TCollectionVATSystemLoss     : Array[1..30] of Currency;
+
+TAmount                      : Currency ;
+TTransformerRental           : Currency ;
+TLLP                         : Currency ;
+TUCNPCSD                     : Currency ;
+TUCNPCSCC                    : Currency ;
+TUCDUSCC                     : Currency ;
+TUCME                        : Currency ;
+TUCETR                       : Currency ;
+TUCEC                        : Currency ;
+TUCCSR                       : Currency ;
+TKwhr                        : Currency ;
+
+TVAT                         : Currency ;
+TVATDist                     : Currency ;
+TVATGenCO                    : Currency ;
+TVATTransCO                  : Currency ;
+TVATSystemLoss               : Currency ;
+
+XRent,LLP                    : Currency;
+PageXRent,PageLLP            : Currency;
+GrandXRent,GrandLLP          : Currency;
+
+PageTotal                    : Currency;
+GrandTotal                   : Currency;
+AmountRemitted               : Real;
+Check                        : Integer;
+Difference                   : Currency;
+I                            : Integer;
+
+Procedure Heading;
+begin
+Write(Lst,#18,#27+'P');
+writeln(lst,'Page #          : ',PageCount);
+writeln(lst,'Report Name     : COLLECTION REPORT - '+Edit2.Text);
+writeln(lst,'COLLECTION DATE : ',DateToStr(SetForm.PostDate.Date));
+Write(Lst,#15);
+Writeln(lst,'---------------------------------------------------------------------------------------------------------');
+Writeln(lst,'| No.  ACCT #       Consumer Name                  Bill Num        X-Rent         LLP        Amount BMon|');
+Writeln(lst,'---------------------------------------------------------------------------------------------------------');
+end;
+
+begin
+  if not(PrinterSetupDialog1.Execute) then Exit;
+
+  PrinterName := '';
+
+    Try
+      Printer.GetPrinter(Device,Driver,Port,varHandle);
+      I := 0;
+
+      While Port[I] <> #0 do
+        begin
+         PrinterName := PrinterName + Port[I];
+         Inc(I);
+        end;
+      AssignFile(Lst,trim(PrinterName));
+      Rewrite(Lst);
+    except
+      ShowMessage('Printer not Ready');
+      Exit;
+    end;
+
+  Val(Edit3.Text,AmountRemitted,Check);
+  ShowMessage('Set Printer on.....');
+
+    begin
+    Collect.Close;
+    Collect.ParamByName('collectorcode').text := SetForm.Collector.Text;
+    Collect.ParamByName('datepaid').AsDate    := SetForm.PostDate.Date;
+    Collect.ParamByName('batch').Text         := SetForm.Batch.Text;
+    Collect.Open;
+
+    Gauge1.Progress := 0;
+    Gauge1.MinValue := 0;
+    Gauge1.MaxValue := Collect.RecordCount;
+
+    Collect.First;
+
+    LineCount                    := 0;
+    HeadSw                       := 0;
+    DetailCount                  := 0;
+    PageCount                    := 1;
+
+    For I := 1 to 30 do
+    begin
+      TArea[I]                        := '';
+      TCollectionAmount[I]            := 0;
+      TCollectionTransformerRental[I] := 0;
+      TCollectionLLP[I]               := 0;
+      TCollectionUCNPCSD[I]           := 0;
+      TCollectionUCNPCSCC[I]          := 0;
+      TCollectionUCDUSCC[I]           := 0;
+      TCollectionUCME[I]              := 0;
+      TCollectionUCETR[I]             := 0;
+      TCollectionUCEC[I]              := 0;
+      TCollectionUCCSR[I]             := 0;
+      TCollectionKwhr[I]              := 0;
+      TCollectionVAT[I]               := 0;
+      TCollectionVATDist[I]           := 0;
+      TCollectionVATGenCO[I]          := 0;
+      TCollectionVATTransCO[I]        := 0;
+      TCollectionVATSystemLoss[I]     := 0;
+    end;
+
+    TAmount             := 0;
+    TTransformerRental  := 0;
+    TLLP                := 0;
+    TUCNPCSD            := 0;
+    TUCNPCSCC           := 0;
+    TUCDUSCC            := 0;
+    TUCME               := 0;
+    TUCETR              := 0;
+    TUCEC               := 0;
+    TUCCSR              := 0;
+    TKwhr               := 0;
+    TVAT                := 0;
+    TVATDist            := 0;
+    TVATGenCO           := 0;
+    TVATTransCO         := 0;
+    TVATSystemLoss      := 0;
+
+    TArea[01]  := '001';
+    TArea[02]  := '002';
+    TArea[03]  := '003';
+    TArea[04]  := '004';
+    TArea[05]  := '005';
+    TArea[06]  := '006';
+    TArea[07]  := '007';
+    TArea[08]  := '008';
+    TArea[09]  := '009';
+    TArea[10]  := '010';
+    TArea[11]  := '011';
+    TArea[12]  := '012';
+    TArea[13]  := '013';
+    TArea[14]  := '014';
+    TArea[15]  := '015';
+    TArea[16]  := '016';
+    TArea[17]  := '017';
+    TArea[18]  := '018';
+    TArea[19]  := '019';
+    TArea[20]  := '020';
+    TArea[21]  := '021';
+    TArea[22]  := '022';
+    TArea[23]  := '023';
+    TArea[24]  := '024';
+    TArea[25]  := '025';
+    TArea[26]  := '026';
+    TArea[27]  := '027';
+    TArea[28]  := '028';
+    TArea[29]  := '029';
+    TArea[30]  := '030';
+
+    PageTotal  := 0;
+    GrandTotal := 0;
+    PageXRent  := 0;
+    PageLLP    := 0;
+    GrandXRent := 0;
+    GrandLLP   := 0;
+
+    Collect.First;
+
+    while not Collect.Eof do
+     begin
+     Gauge1.AddProgress(1);
+
+     Application.ProcessMessages;
+
+     If HeadSW = 0 then
+       begin
+         HeadSW := 1;
+         Heading;
+       end;
+
+      Inc(DetailCount);
+
+      LLP   := 0;
+      XRent := 0;
+
+      If CollectSequence.Text = 'R' then
+      LLP   := CollectTransformerRental.AsCurrency else
+      XRent := CollectTransformerRental.AsCurrency;
+
+      Writeln(Lst,'| ',DetailCount:3,'. ',
+                  JustStr(CollectAccountNumber.Text,' ',10,0),   '-',
+                  JustStr(CollectSequence.Text,' ',1,0),         ' ',
+                  Juststr(CollectName.Text,' ',30,0),            ' ',
+                  Juststr(CollectReceiptNumber.Text,' ',10,0),   ' ',
+                  Format(XRent,'###,###.##'),
+                  Format(LLP,'###,###.##'),
+                  Format(CollectTotal.AsCurrency,'#,###,###.##'),
+                  Juststr(CollectBillMonth.Text,' ',04,0),       '|');
+
+      For I := 1 to 30 do
+      begin
+      If ((TArea[I] = CollectArea.Text)) or
+         ((TArea[I] = '0'+CollectArea.Text)) then
+          begin
+            TCollectionAmount[I]             := TCollectionAmount[I] +             CollectTotal.AsCurrency;
+
+            If CollectSequence.Text <> 'R' then
+            TCollectionTransformerRental[I]  := TCollectionTransformerRental[I] +  CollectTransformerRental.AsCurrency else
+            TCollectionLLP[I]                := TCollectionLLP[I] +                CollectTransformerRental.AsCurrency;
+
+            TCollectionUCNPCSD[I]            := TCollectionUCNPCSD[I] +            CollectUCNPCSD.AsCurrency;
+            TCollectionUCNPCSCC[I]           := TCollectionUCNPCSCC[I] +           CollectUCNPCSCC.AsCurrency;
+            TCollectionUCDUSCC[I]            := TCollectionUCDUSCC[I] +            CollectUCDUSCC.AsCurrency;
+            TCollectionUCME[I]               := TCollectionUCME[I] +               CollectUCME.AsCurrency;
+            TCollectionUCETR[I]              := TCollectionUCETR[I] +              CollectUCETR.AsCurrency;
+            TCollectionUCEC[I]               := TCollectionUCEC[I] +               CollectUCEC.AsCurrency;
+            TCollectionKwhr[I]               := TCollectionKwhr[I] +               CollectKilowattHour.AsCurrency;
+            TCollectionVAT[I]                := TCollectionVAT[I] +                CollectVAT.AsCurrency;
+            TCollectionVATDist[I]            := TCollectionVATDist[I] +            CollectVATDist.AsCurrency;
+            TCollectionVATGenCO[I]           := TCollectionVATGenCO[I] +           CollectVATGenCO.AsCurrency;
+            TCollectionVATTransCO[I]         := TCollectionVATTransCO[I] +         CollectVATTransCO.AsCurrency;
+            TCollectionVATSystemLoss[I]      := TCollectionVATSystemLoss[I] +      CollectVATSystemLossGenCO.AsCurrency;
+
+            TAmount                          := TAmount + CollectTotal.AsCurrency;
+
+            If CollectionSequence.Text <> 'R' then
+            TTransformerRental  := TTransformerRental + CollectTransformerRental.AsCurrency else
+            TLLP                := TLLP + CollectTransformerRental.AsCurrency;
+
+            TUCNPCSD            := TUCNPCSD + CollectUCNPCSD.AsCurrency;
+            TUCNPCSCC           := TUCNPCSCC + CollectUCNPCSCC.AsCurrency;
+            TUCDUSCC            := TUCDUSCC + CollectUCDUSCC.AsCurrency;
+            TUCME               := TUCME + CollectUCME.AsCurrency;
+            TUCETR              := TUCETR + CollectUCETR.AsCurrency;
+            TUCEC               := TUCEC + CollectUCEC.AsCurrency;
+            TKwhr               := TKwhr + CollectKilowattHour.AsCurrency;
+            TVAT                := TVAT + CollectVAT.AsCurrency;
+            TVATDist            := TVATDist + CollectVATDist.AsCurrency;
+            TVATGenCO           := TVATGenCO + CollectVATGenCO.AsCurrency;
+            TVATTransCO         := TVATTransCO + CollectVATTransCO.AsCurrency;
+            TVATSystemLoss      := TVATSystemLoss + CollectVATSystemLossGenCO.AsCurrency;
+          end;
+      end;
+
+      PageTotal                    := PageTotal + CollectTotal.AsCurrency;
+      GrandTotal                   := GrandTotal + CollectTotal.AsCurrency;
+
+      PageXRent                    := PageXRent + XRent;
+      PageLLP                      := PageLLP + LLP;
+      GrandXRent                   := GrandXRent + XRent;
+      GrandLLP                     := GrandLLP + LLP;
+
+     Inc(LineCount);
+     If LineCount = 50 then
+       begin
+        HeadSW    := 0;
+        LineCount := 0;
+        Inc(PageCount);
+        Writeln(lst,'---------------------------------------------------------------------------------------------------------');
+        Writeln(lst,'|                                                  Page Total ',Format(PageXRent,'###,###.##'),
+                                                                                     Format(PageLLP,'###,###.##'),
+                                                                                     Format(PageTotal,'#,###,###.##'),'    |');
+        Writeln(lst,'---------------------------------------------------------------------------------------------------------');
+        PageTotal := 0;
+        PageXRent := 0;
+        PageLLP   := 0;
+
+        Write(Lst,#12);
+       end;
+
+     If Edit5.Text <> '' then
+     begin
+      Collect.Edit;
+      CollectSundries.Text := Edit5.Text;
+      Collect.Post;
+     end;
+
+     Collect.Next;
+     end;
+    end;
+
+If LineCount > 0 then
+ begin
+  Writeln(lst,'---------------------------------------------------------------------------------------------------------');
+  Writeln(lst,'|                                                  Page Total ',Format(PageXRent,'###,###.##'),
+                                                                               Format(PageLLP,'###,###.##'),
+                                                                             Format(PageTotal,'#,###,###.##'),'    |');
+ end;
+
+Difference := AmountRemitted - GrandTotal;
+Writeln(lst,'---------------------------------------------------------------------------------------------------------');
+Writeln(lst,'|                                                 Grand Total ',Format(GrandXRent,'###,###.##'),
+                                                                             Format(GrandLLP,'###,###.##'),
+                                                                             Format(GrandTotal,'#,###,###.##'),'    |');
+Writeln(lst,'|                                                              Less : Amount Remitted ',Format(AmountRemitted,'#,###,###.##'),'    |');
+Writeln(lst,'|                                                                          Difference ',Format(Difference,'#,###,###.##'),'    |');
+Writeln(lst,'---------------------------------------------------------------------------------------------------------');
+Writeln(lst);
+Writeln(lst,#27+'M');
+Writeln(lst,'Prepared by : __________________________  Received by : ________________  OR #:',Edit5.Text);
+Writeln(lst,'             ',JustStr(Edit2.Text,' ',25,0),
+            '              ',JustStr(Edit3.Text,' ',16,0));
+
+Write(Lst,#12);
+Writeln(lst);
+Writeln(lst);
+writeln(lst,'Report Name     : COLLECTION REPORT - '+Edit2.Text);
+writeln(lst,'COLLECTION DATE : ',DateToStr(SetForm.PostDate.Date));
+Writeln(Lst,'Other Charges Breakdown',#15);
+Writeln(lst,'-----------------------------------------------------------------------------------------------------------------------------------------------------------------');
+Writeln(lst,'|AR.|      Total |NPC Stranded|NPC Stranded| DU Stranded| Missionary |  Taxes and | Environment| Transformer|        LLP |       EVAT |        Net | Kilowatt Hr|');
+Writeln(lst,'|   |     Amount |       Debts|  Cont. Cost|  Cont. Cost|      Elec. |  Royalties |            |      Rental|            |            |            |            |');
+Writeln(lst,'-----------------------------------------------------------------------------------------------------------------------------------------------------------------');
+For I := 1 to 30 do
+If TCollectionAmount[I] > 0 then
+Writeln(lst,'|',TArea[I],' ',
+            Format(TCollectionAmount[I],'###,###.##'),'|',
+            Format(TCollectionUCNPCSD[I] ,'###,###.##'),'|',
+            Format(TCollectionUCNPCSCC[I] ,'###,###.##'),'|',
+            Format(TCollectionUCDUSCC[I] ,'###,###.##'),'|',
+            Format(TCollectionUCME[I] ,'###,###.##'),'|',
+            Format(TCollectionUCETR[I] ,'###,###.##'),'|',
+            Format(TCollectionUCEC[I] ,'###,###.##'),'|',
+            Format(TCollectionTransformerRental[I] ,'###,###.##'),'|',
+            Format(TCollectionLLP[I] ,'###,###.##'),'|',
+            Format(TCollectionVATGenCO[I] +
+                   TCollectionVATTransCO[I] +
+                   TCollectionVATSystemLoss[I] +
+                   TCollectionVATDist[I],'###,###.##'),'|',
+            Format(TCollectionAmount[I]-
+                  (TCollectionUCNPCSD[I] +
+                   TCollectionUCNPCSCC[I] +
+                   TCollectionUCDUSCC[I] +
+                   TCollectionUCME[I] +
+                   TCollectionUCETR[I] +
+                   TCollectionUCEC[I] +
+                   TCollectionTransformerRental[I] +
+                   TCollectionLLP[I]+
+                   TCollectionVATGenCO[I] +
+                   TCollectionVATTransCO[I] +
+                   TCollectionVATSystemLoss[I] +
+                   TCollectionVATDist[I]),'###,###.##'),'|',
+            Format(TCollectionKWHR[I] ,'###,###.##'),'|');
+Writeln(lst,'-----------------------------------------------------------------------------------------------------------------------------------------------------------------');
+Writeln(lst,'Total',
+            Format(TAmount,'###,###.##'),'|',
+            Format(TUCNPCSD ,'###,###.##'),'|',
+            Format(TUCNPCSCC ,'###,###.##'),'|',
+            Format(TUCDUSCC ,'###,###.##'),'|',
+            Format(TUCME ,'###,###.##'),'|',
+            Format(TUCETR ,'###,###.##'),'|',
+            Format(TUCEC ,'###,###.##'),'|',
+            Format(TTransformerRental ,'###,###.##'),'|',
+            Format(TLLP ,'###,###.##'),'|',
+            Format(TVATGenCO +
+                   TVATTransCO +
+                   TVATSystemLoss +
+                   TVATDist,'###,###.##'),'|',
+            Format(TAmount-
+                  (TUCNPCSD +
+                   TUCNPCSCC +
+                   TUCDUSCC +
+                   TUCME +
+                   TUCETR +
+                   TUCEC +
+                   TUCCSR +
+                   TTransformerRental +
+                   TLLP+
+                   TVATGenCO +
+                   TVATTransCO +
+                   TVATSystemLoss +
+                   TVATDist),'###,###.##'),'|',
+            Format(TKWHR ,'###,###.##'),'|');
+Writeln(lst,'-----------------------------------------------------------------------------------------------------------------------------------------------------------------');
+Writeln(Lst);
+Writeln(Lst,#27+'P',#18);
+Writeln(Lst,'VAT Breakdown');
+Writeln(lst,'---------------------------------------------------------------------');
+Writeln(lst,'|AR.|        VAT |        VAT |        VAT |        VAT |        VAT |');
+Writeln(lst,'|   |      GenCO |    TransCO |System Loss |       Dist |      Total |');
+Writeln(lst,'----------------------------------------------------------------------');
+For I := 1 to 30 do
+If TCollectionAmount[I] > 0 then
+Writeln(lst,'|',TArea[I],' ',
+            Format(TCollectionVATGenco[I],'###,###.##'),'|',
+            Format(TCollectionVATTransCO[I] ,'###,###.##'),'|',
+            Format(TCollectionVATSystemLoss[I] ,'###,###.##'),'|',
+            Format(TCollectionVATDist[I] ,'###,###.##'),'|',
+            Format(TCollectionVATGenCO[I] +
+                   TCollectionVATTransCO[I] +
+                   TCollectionVATSystemLoss[I] +
+                   TCollectionVATDist[I],'###,###.##'),'|');
+Writeln(lst,'----------------------------------------------------------------------');
+Writeln(lst,'Total',
+            Format(TVATGenCO,'###,###.##'),'|',
+            Format(TVATTransCO,'###,###.##'),'|',
+            Format(TVATSystemLoss ,'###,###.##'),'|',
+            Format(TVATDist ,'###,###.##'),'|',
+            Format(TVATGenCO +
+                   TVATTransCO +
+                   TVATSystemLoss +
+                   TVATDist,'###,###.##'),'|');
+Writeln(lst,'----------------------------------------------------------------------');
+Write(lst,#12);
+CloseFile(Lst);
+MessageDlg('Printing done.....', mtInformation, [mbOK], 0);
+end;
+
+procedure TTellerPOSForm.PDJSillyLabel6Click(Sender: TObject);
+begin
+  PrintCollRepEntry.Visible := False;
+end;

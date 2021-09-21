@@ -1,0 +1,1632 @@
+unit TellerMenu;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, PDJSillyLabel, PDJRotoLabel, ExtCtrls, StdCtrls, DB,
+  MemDS, DBAccess, MyAccess, Gauges, ComCtrls, Grids, DBGrids,
+  DsFancyButton, Printers, NxCollection, jpeg, NxEdit;
+
+type
+  TMenuForm = class(TForm)
+    Panel1: TNxHeaderPanel;
+    PDJSillyLabel1: TNxButton;
+    PDJSillyLabel2: TNxButton;
+    Gauge1: TGauge;
+    Recap: TMyQuery;
+    Label1: TLabel;
+    TransactionDateFrom: TDateTimePicker;
+    PTOR: TMyQuery;
+    Panel2: TNxHeaderPanel;
+    PClass: TMyTable;
+    PClassID: TIntegerField;
+    PClassCode: TStringField;
+    PClassDescription: TStringField;
+    DSPClass: TDataSource;
+    DBGrid1: TDBGrid;
+    StaticText3: TStaticText;
+    Label2: TLabel;
+    DateFrom: TDateTimePicker;
+    DateTo: TDateTimePicker;
+    Label3: TLabel;
+    Label4: TLabel;
+    Button1: TNxButton;
+    Button2: TNxButton;
+    Bevel2: TBevel;
+    Gauge2: TGauge;
+    Coll: TMyQuery;
+    CollEntry: TIntegerField;
+    CollReceiptNumber: TStringField;
+    CollAccountCode: TFloatField;
+    CollArea: TStringField;
+    CollBook: TStringField;
+    CollSequence: TStringField;
+    CollAccountNumber: TStringField;
+    CollName: TStringField;
+    CollBillMonth: TStringField;
+    CollTotalBill: TFloatField;
+    CollMembership: TFloatField;
+    CollPenalty: TFloatField;
+    CollSecurity: TFloatField;
+    CollMeterDeposit: TFloatField;
+    CollTransformerRental: TFloatField;
+    CollSundries: TStringField;
+    CollSundriesAmount: TFloatField;
+    CollUCNPCSD: TFloatField;
+    CollUCNPCSCC: TFloatField;
+    CollUCDUSCC: TFloatField;
+    CollUCME: TFloatField;
+    CollUCETR: TFloatField;
+    CollUCEC: TFloatField;
+    CollUCCSR: TFloatField;
+    CollLoanCondo: TFloatField;
+    CollTotal: TFloatField;
+    CollCollectorCode: TStringField;
+    CollDatePaid: TDateField;
+    CollDateRemitted: TDateField;
+    CollEncoderCode: TStringField;
+    CollPosted: TStringField;
+    CollKilowattHour: TFloatField;
+    CollAddress: TStringField;
+    CollOPDescription: TStringField;
+    CollOPAmount: TFloatField;
+    CollTellerORNumber: TStringField;
+    Image1: TImage;
+    P1: TNxButton;
+    CDCR: TNxButton;
+    Summary: TNxButton;
+    OtherPayment: TNxButton;
+    P4: TNxButton;
+    Recap1: TMyQuery;
+    PDJSillyLabel4: TNxButton;
+    PTORID: TIntegerField;
+    PTORORNumber: TStringField;
+    PTORORDate: TDateField;
+    PTORAccountNumber: TStringField;
+    PTORName: TStringField;
+    PTORAddress: TStringField;
+    PTORAmount: TFloatField;
+    PTORTellerCode: TStringField;
+    PTORTellerName: TStringField;
+    PTORCheckNumber: TStringField;
+    PTORCheckDate: TDateTimeField;
+    PTORBank: TStringField;
+    PTORCheckAmount: TFloatField;
+    PTORCashTendered: TFloatField;
+    PTORbackupor: TStringField;
+    PTORbatch: TStringField;
+    PTORTransStat: TStringField;
+    PTORORStatus: TStringField;
+    Recap2: TMyQuery;
+    Recap2ucec: TFloatField;
+    Recap2ucme: TFloatField;
+    Recap2VAT: TFloatField;
+    Recap2VATDist: TFloatField;
+    Recap2VATGenCO: TFloatField;
+    Recap2VATTransCO: TFloatField;
+    Recap2VATSystemLoss: TFloatField;
+    Recap1OPDescription: TStringField;
+    Recap1code: TStringField;
+    Recap1TAmount: TFloatField;
+    RecapOPDescription: TStringField;
+    RecapTAmount: TFloatField;
+    Recapcode: TStringField;
+    PrinterSetupDialog1: TPrinterSetupDialog;
+    Recap2TotalBill: TFloatField;
+    Recap2totalnet: TCurrencyField;
+    GroupBox1: TGroupBox;
+    GroupBox2: TGroupBox;
+    GroupBox3: TGroupBox;
+    GroupBox4: TGroupBox;
+    GroupBox5: TGroupBox;
+    PreparedName: TEdit;
+    PreparedPos: TEdit;
+    CheckedName: TEdit;
+    CheckPos: TEdit;
+    ReviewedName: TEdit;
+    ReviewedPos: TEdit;
+    AuditedName: TEdit;
+    AuditedPos: TEdit;
+    AttestedName: TEdit;
+    AttestedPos: TEdit;
+    Recap2transformerrental: TFloatField;
+    Recaptellerornumber: TStringField;
+    TransactionDateTo: TDateTimePicker;
+    Label6: TLabel;
+    ReportOption: TRadioGroup;
+    Image2: TImage;
+    Recap2SystemLossCharge: TFloatField;
+    Recap2PKVRAmount: TFloatField;
+    groupselect: TMyQuery;
+    groupselectcollectorcode: TStringField;
+    groupselectname: TStringField;
+    groupselectusertype: TStringField;
+    groupselectdatepaid: TDateField;
+    groupselectencodercode: TStringField;
+    groupselectsundries: TStringField;
+    groupselecttotalbill: TFloatField;
+    groupselectucec: TFloatField;
+    groupselectucme: TFloatField;
+    groupselectvatdist: TFloatField;
+    groupselectvatgenco: TFloatField;
+    groupselectvattransco: TFloatField;
+    groupselectvatsystemloss: TFloatField;
+    groupselecttransformerrental: TFloatField;
+    groupselectNetAmount: TFloatField;
+    groupselecttotalaccount: TLargeintField;
+    groupselectposted: TStringField;
+    groupselectPKVRAmount: TFloatField;
+    ReceiptPrinting: TNxButton;
+    CreateDeposit: TMyQuery;
+    DepositBtn: TNxButton;
+    NxButton1: TNxButton;
+    NxButton2: TNxButton;
+    NxLabel1: TNxLabel;
+    COHAccount: TNxButtonEdit;
+    Deposit: TMyQuery;
+    CreateSigntory: TMyQuery;
+    NxButton3: TNxButton;
+    signatory: TMyQuery;
+    signatoryidcdcrsign: TLargeintField;
+    signatoryPreparedByName: TStringField;
+    signatoryPreparedByPosition: TStringField;
+    signatoryCheckedByName: TStringField;
+    signatoryCheckedByPosition: TStringField;
+    signatoryReviewedByName: TStringField;
+    signatoryReviewedByPosition: TStringField;
+    signatoryAuditedByName: TStringField;
+    signatoryAuditedByPostion: TStringField;
+    signatoryAttestedByName: TStringField;
+    signatoryAttestedByPosition: TStringField;
+    OpenDialog1: TOpenDialog;
+    NxMemo1: TNxMemo;
+    CRRecap: TMyQuery;
+    CRRecapcode: TStringField;
+    CRRecapTAmount: TFloatField;
+    Depositaccountcode: TStringField;
+    Depositaccountdescription: TStringField;
+    Depositdepositdate: TDateField;
+    Depositamount: TFloatField;
+    InsertAccountCode: TMyQuery;
+    signatoryCOHAccountcoce: TStringField;
+    signatoryARAccountCode: TStringField;
+    NxEdit1: TNxEdit;
+    SC: TMyQuery;
+    SCidsaleschart: TLargeintField;
+    SCConsAR: TStringField;
+    SCConsARPilfer: TStringField;
+    SCConsARMCC: TStringField;
+    SCConsARPilferPen: TStringField;
+    SCARVatDist: TStringField;
+    SCARVatTransCo: TStringField;
+    SCARVatGenCo: TStringField;
+    SCARVatSystemLoss: TStringField;
+    SCARUCEC: TStringField;
+    SCARUCME: TStringField;
+    SCFinaVat: TStringField;
+    SCSalesRes: TStringField;
+    SCSalesComm: TStringField;
+    SCSalesInd: TStringField;
+    SCSalesSL: TStringField;
+    SCSalesPub: TStringField;
+    SCSalesPilfer: TStringField;
+    SCSalesPen: TStringField;
+    SCSalesMCC: TStringField;
+    SCSalesVatDist: TStringField;
+    SCSalesVatTransco: TStringField;
+    SCSalesVatGenco: TStringField;
+    SCSalesVatSystemLoss: TStringField;
+    SCSalesUCEC: TStringField;
+    SCSalesUCME: TStringField;
+    Recap2mcc: TFloatField;
+    DCPR: TNxButton;
+    SCTransformerAR: TStringField;
+    DepositBankRemit: TMyQuery;
+    DepositBankRemitaccountcode: TStringField;
+    DepositBankRemitaccountdescription: TStringField;
+    DepositBankRemitdepositdate: TDateField;
+    DepositBankRemitamount: TFloatField;
+    ReturnCheck: TMyQuery;
+    ReturnCheckiddeposit: TLargeintField;
+    ReturnCheckCDCRDate: TDateField;
+    ReturnCheckdepositdate: TDateField;
+    ReturnCheckDescription: TStringField;
+    ReturnCheckAccountCode: TStringField;
+    ReturnCheckAccountDescription: TStringField;
+    ReturnCheckAmount: TFloatField;
+    ReturnCheckBankRemit: TStringField;
+    NoCash: TMyQuery;
+    NoCashTAmount: TFloatField;
+    PartialDeposit: TMyQuery;
+    PartialDepositaccountcode: TStringField;
+    PartialDepositaccountdescription: TStringField;
+    PartialDepositdepositdate: TDateField;
+    PartialDepositamount: TFloatField;
+    procedure P4Click(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure P1Click(Sender: TObject);
+    procedure OtherPaymentClick(Sender: TObject);
+    procedure PDJSillyLabel2Click(Sender: TObject);
+    procedure CDCRClick(Sender: TObject);
+    procedure PDJSillyLabel1Click(Sender: TObject);
+    procedure DSPClassDataChange(Sender: TObject; Field: TField);
+    procedure Button2Click(Sender: TObject);
+    procedure SummaryClick(Sender: TObject);
+    procedure Button1Click(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure PDJSillyLabel4Click(Sender: TObject);
+    procedure Recap2CalcFields(DataSet: TDataSet);
+    procedure ReportOptionClick(Sender: TObject);
+    procedure ReceiptPrintingClick(Sender: TObject);
+    procedure DepositBtnClick(Sender: TObject);
+    procedure COHAccountButtonClick(Sender: TObject);
+    procedure NxButton1Click(Sender: TObject);
+    procedure NxButton3Click(Sender: TObject);
+    procedure NxButton2Click(Sender: TObject);
+    procedure NxEdit1Change(Sender: TObject);
+    procedure DCPRClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+   Procedure SelectAccountFromForm(AccountString : String);
+  end;
+
+var
+  MenuForm: TMenuForm;
+
+implementation
+
+uses SetTeller,
+     TellerPOS,
+     OtherPayments,
+     ModTools,
+     DateUtils,
+     Data,
+     AckrTor,
+     depositslip,
+     ChartList, DCPR;
+
+var
+ PageCount      : Integer         ;
+ LineCount      : Integer         ;
+ HeadSW         : Boolean         ;
+ GrandTotal     : Currency        ;
+ TotalORS       : Integer         ;
+ PrinterName    : String          ;
+ Device,
+ Driver, Port: array[0..1023] of char;
+ varhandle : THandle;
+
+{$R *.dfm}
+
+Procedure TMenuForm.SelectAccountFromForm;
+begin
+
+    If not Assigned(AccountChartForm) then
+    AccountChartForm := TAccountChartForm.Create(Application);
+
+    With AccountChartForm do
+     begin
+      MyChart.Close;
+      MyChart.ParamByName('code').Text        := '%'+AccountString+'%';
+      MyChart.ParamByName('description').Text := '%'+AccountString+'%';
+      MyChart.Open;
+     end;
+
+    AccountChartForm.ShowModal;
+end;
+
+procedure TMenuForm.P4Click(Sender: TObject);
+begin
+  Close;
+end;
+
+procedure TMenuForm.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  Action := caFree;
+  MenuForm := Nil;
+  SetForm.Close;
+end;
+
+procedure TMenuForm.P1Click(Sender: TObject);
+begin
+ If not assigned(TellerPOSForm) then
+ TellerPOSForm := TTellerPOSForm.Create(Application);
+ If SetForm.usersUserType.Text = '5' then
+   begin
+     TellerPosForm.btnGetBatch.Enabled           := True;
+     TellerPosForm.BtnNewApplicant.Enabled       := True;
+     TellerPosForm.BtnDisconnect.Enabled         := True;
+     TellerPosForm.BtnReconnect.Enabled          := True;
+     TellerPosForm.BtnSubOffice.Enabled          := True;
+     TellerPOSForm.ConsumerDataBox.Left          := 46;
+     TellerPOSForm.ConsumerDataBox.Top           := 124;
+     TellerPOSForm.OutstandingAccountBox.Visible := False;
+     TellerPOSForm.OtherPaymentsBox.Left         := 46;
+     TellerPOSForm.OtherPaymentsBox.Top          := 317;
+     TellerPOSForm.Caption                       := 'ON-LINE Cashier Interface';
+     TellerPOSForm.Label44.Caption               := 'Cashier''s Interface';
+     TellerPOSForm.ConsumerDataBox.Enabled       := True;
+   end;
+
+ If SetForm.usersUserType.Text = '8' then
+   begin
+     TellerPOSForm.Caption                       := 'MOBILE TELLER INTERFACE';
+     TellerPOSForm.Label44.Caption               := 'Mobile Tellering System';
+   end;
+
+ case SetForm.FormOpt.ItemIndex of
+ 0 : TellerPOSForm.FormType.Caption := 'Acknowledgement Receipt';
+ 1 : TellerPOSForm.FormType.Caption := 'Teller OEBR Old';
+ 2 : TellerPOSForm.FormType.Caption := 'Teller OEBR New';
+ 3 : TellerPOSForm.FormType.Caption := 'Cashier''s Official Receipt';
+ end;
+
+ case SetForm.PrintOpt.ItemIndex of
+ 0 : TellerPOSForm.PrintOption.Caption := 'Printer Option : Default';
+ 1 : TellerPOSForm.PrintOption.Caption := 'Printer Option : EPSON LX-II';
+ end;
+
+ TellerPOSForm.TOR.FilterSQL   := 'TellerCode = '+QuotedStr(SetForm.usersCollectorCode.Text)+' and '+
+                                  'batch = '+QuotedStr(SetForm.Batch.Text)+' and '+
+                                  'ORDate = '+QuotedStr(FormatDateTime('YYYY-MM-DD',SetForm.PostDate.Date));
+ TellerPOSForm.TOR.OrderFields := 'ORNumber';
+ TellerPOSForm.TOR.Open;
+
+ TellerPOSForm.Show;
+end;
+
+procedure TMenuForm.OtherPaymentClick(Sender: TObject);
+begin
+If not assigned(OtherPaymentsForm) then
+ OtherPaymentsForm := TOtherPaymentsForm.Create(Application);
+ OtherPaymentsForm.Show;
+end;
+
+procedure TMenuForm.PDJSillyLabel2Click(Sender: TObject);
+begin
+  Panel1.Visible := False;
+  sc.Close;
+  signatory.Close;
+end;
+
+procedure TMenuForm.CDCRClick(Sender: TObject);
+begin
+  try
+   CreateSigntory.Execute;
+  except
+  end;
+
+  try       
+   InsertAccountCode.Execute;
+  except
+  end;
+
+  signatory.open;
+
+  If signatory.IsEmpty then
+    begin
+     Signatory.Append;
+     signatoryPreparedByName.Text     := 'ISIDRA E. PAGENTE';
+     signatoryPreparedByPosition.Text := 'Chief, Treasury Div.';
+
+     signatoryCheckedByName.Text      := 'LEPHYN G. VILLARINO, CPA';
+     signatoryCheckedByPosition.Text  := 'Chief, Finance Dept.';
+
+     signatoryReviewedByName.Text     := 'LEONORA I. TIMTIM, MBA';
+     signatoryReviewedByPosition.Text := 'FSD Manager';
+
+     signatoryAuditedByName.Text      := 'FLORDELIZ H. FLORIDA, CPA';
+     signatoryAuditedByPostion.Text   := 'Internal Auditor';
+
+     signatoryAttestedByName.Text     := 'ADELMO P. LAPUT';
+     signatoryAttestedByPosition.Text := 'General Manager';
+     signatory.Post;
+    end else
+    begin
+     PreparedName.Text                := signatoryPreparedByName.Text;
+     PreparedPos.Text                 := signatoryPreparedByPosition.Text;
+
+     CheckedName.Text                 := signatoryCheckedByName.Text;
+     CheckPos.Text                    := signatoryCheckedByPosition.Text;
+
+     ReviewedName.Text                := signatoryReviewedByName.Text;
+     ReviewedPos.Text                 := signatoryReviewedByPosition.Text;
+
+     AuditedName.Text                 := signatoryAuditedByName.Text;
+     AuditedPos.Text                  := signatoryAuditedByPostion.Text;
+
+     AttestedName.Text                := signatoryAttestedByName.Text;
+     AttestedPos.Text                 := signatoryAttestedByPosition.Text;
+
+     COHAccount.Text                  := signatoryCOHAccountcoce.Text;
+    end;
+
+  SC.Open;
+  
+  Panel1.Left          := 39;
+  Panel1.Top           := 16;
+  Panel1.Visible       := True;
+  TransactionDateFrom.Date := Now;
+end;
+
+procedure TMenuForm.PDJSillyLabel1Click(Sender: TObject);
+
+Procedure TellerReportHeadingOR;
+begin
+ Write(Lst,#18,#27+'P');
+ Writeln(Lst,'Page ',PageCount);
+ Writeln(Lst,#27+'E','CASHIER''S DAILY COLLECTION REPORT',#27+'F');
+ Writeln(Lst,'Cashier Name      : ',SetForm.TellerName.Text);
+ Writeln(Lst,'Collection Date   : ',DateToStr(TransactionDateFrom.DateTime));
+ Writeln(Lst,'-----------------------------------------------------------------------');
+ Writeln(Lst,'|  Teller OR  Name                                             Amount |');
+ Writeln(Lst,'-----------------------------------------------------------------------');
+end;
+
+begin
+ if MessageDlg('Set Printer on ..... Proceed?', mtConfirmation, [mbOK,mbCancel], 0) = mrCancel then
+ exit;
+
+  if not(PrinterSetupDialog1.Execute) then Exit;
+
+  PrinterName := '';
+
+    Try
+      Printer.GetPrinter(Device,Driver,Port,varHandle);
+      I := 0;
+      While Port[I] <> #0 do
+        begin
+         PrinterName := PrinterName + Port[I];
+         Inc(I);
+        end;
+      AssignFile(Lst,PrinterName);
+      Rewrite(Lst);
+    except
+      ShowMessage('Printer not Ready');
+      Exit;
+    end;
+
+ PTOR.ParamByName('tellercode').text := SetForm.usersCollectorCode.Text;
+ PTOR.ParamByName('ORDate').AsDate   := TransactionDateFrom.Date;
+ PTOR.Open;
+
+ If PTOR.IsEmpty then
+   begin
+    MessageDlg('No data to print.  Please check.', mtInformation, [mbOK], 0);
+    Ptor.Close;
+    exit;
+   end;
+
+ PageCount           := 1;
+ LineCount           := 0;
+ HeadSW              := True;
+ GrandTotal          := 0;
+ TotalORS            := 0;
+
+ Gauge1.Visible      := False;
+ Gauge1.Progress     := 0;
+ Gauge1.MinValue     := 0;
+ Gauge1.MaxValue     := PTOR.RecordCount;
+ Application.ProcessMessages;
+
+ Gauge1.Visible      := True;
+
+ PTOR.First;
+
+ While not PTOR.Eof do
+  begin
+
+  Gauge1.AddProgress(1);
+  Application.ProcessMessages;
+
+  If HeadSW then
+   begin
+    HeadSW := False;
+    TellerReportHeadingOR;
+   end;
+
+   Writeln(Lst,' ',JustStr(PTORORNumber.Text,' ',12,0),
+               ' ',JustStr(PTORName.Text,' ',40,0),
+               Format (PTORAmount.AsCurrency,'#,###,###.##'));
+
+   GrandTotal := GrandTotal + PTORAmount.AsCurrency;
+   Inc(TotalORS);
+
+   Inc(LineCount);
+   If LineCount = 50 then
+    begin
+     Inc(PageCount);
+     LineCount := 0;
+     Writeln(Lst,'-----------------------------------------------------------------------------------------------');
+     Write(Lst,#12);
+     TellerReportHeadingOR;
+    end;
+
+   PTOR.Next;
+  end;
+ Writeln(Lst,'-----------------------------------------------------------------------');
+ Writeln(Lst,'|  Teller OR  Name                                             Amount |');
+ Writeln(Lst,'-----------------------------------------------------------------------');
+
+ Writeln(Lst,'-----------------------------------------------------------------------');
+ Writeln(Lst,'|                                         TOTAL  ',TotalORS:5,' ',
+              Format (GrandTotal,'##,###,###.##'),'|');
+ Writeln(Lst,'-----------------------------------------------------------------------');
+
+ If LineCount > 0 then Write(Lst,#12);
+
+ PTOR.Close;
+
+ CloseFile(Lst);
+ MessageDlg('Detail Printing done.', mtInformation, [mbOK], 0);
+end;
+
+procedure TMenuForm.DSPClassDataChange(Sender: TObject; Field: TField);
+begin
+  StaticText3.Caption := PClassDescription.Text;
+end;
+
+procedure TMenuForm.Button2Click(Sender: TObject);
+begin
+  PClass.Close;
+  Panel2.Visible := False;
+end;
+
+procedure TMenuForm.SummaryClick(Sender: TObject);
+begin
+  Panel2.Left    := 6;
+  Panel2.Top     := 22;
+  DateFrom.Date  := StartOfTheMonth(Now);
+  DateTo.Date    := EndOfTheMonth(Now);
+  Panel2.Visible := True;
+  Panel2.BringToFront;
+  PClass.Open;
+end;
+
+procedure TMenuForm.Button1Click(Sender: TObject);
+
+Procedure SummaryHeading;
+begin
+ Write(Lst,#18,#27+'P');
+ Writeln(Lst,'Page ',PageCount);
+ Writeln(Lst,#27+'E','SUMMARY OF COLLECTION PER PAYMENT DESCRIPTION',#27+'F');
+ Writeln(Lst,'PAYMENT DESCRIPTION : '+PClassDescription.Text);
+ Writeln(Lst,'PERIOD COVERED      : ',DateToStr(Datefrom.DateTime)+' - '+DateToStr(DateTo.DateTime));
+ Write(Lst,#15);
+ Writeln(Lst,'----------------------------------------------------------------------------------------------------------');
+ Writeln(Lst,'| Account# |             Name             |       Address      |   Date   |   OR Number   |        Amount|');
+ Writeln(Lst,'----------------------------------------------------------------------------------------------------------');
+end;
+
+begin
+ if MessageDlg('Set Printer on ..... Proceed?', mtConfirmation, [mbOK,mbCancel], 0) = mrCancel then
+ exit;
+
+ AssignFile(Lst,'LPT1');
+ Rewrite(Lst);
+ If IOResult <> 0 then
+   begin
+    MessageDlg('Printer error ... cannot open LPT1.', mtError, [mbOK], 0);
+    exit;
+   end;
+
+ Coll.Close;
+ Coll.ParamByName('datefrom').AsDate    := DateFrom.Date;
+ Coll.ParamByName('dateto').AsDate      := Dateto.Date;
+ Coll.ParamByName('opdescription').text := PClassDescription.Text;
+ Coll.Open;
+
+ If Coll.IsEmpty then
+   begin
+    MessageDlg('No data to print.  Please check.', mtInformation, [mbOK], 0);
+    Coll.Close;
+    exit;
+   end;
+
+ PageCount           := 1;
+ LineCount           := 0;
+ HeadSW              := True;
+ GrandTotal          := 0;
+ TotalORS            := 0;
+
+ Gauge2.Visible      := False;
+ Gauge2.Progress     := 0;
+ Gauge2.MinValue     := 0;
+ Gauge2.MaxValue     := Coll.RecordCount;
+ Application.ProcessMessages;
+
+ Gauge2.Visible      := True;
+
+ Coll.First;
+
+ While not Coll.Eof do
+  begin
+
+  Gauge2.AddProgress(1);
+  Application.ProcessMessages;
+
+  If HeadSW then
+   begin
+    HeadSW := False;
+    SummaryHeading;
+   end;
+
+   Writeln(Lst,'|',JustStr(CollAccountNumber.Text,' ',10,0),
+               '|',JustStr(CollName.Text,' ',30,0),
+               '|',JustStr(CollAddress.Text,' ',20,0),
+               '|',JustStr(CollDatePaid.Text,' ',10,0),
+               '|',JustStr(CollTellerORNumber.Text,' ',15,0),
+               '|',Format (CollTotal.AsCurrency,'#,###,###.##'),
+               '|');
+
+   GrandTotal := GrandTotal + CollTotal.AsCurrency;
+   Inc(TotalORS);
+
+   Inc(LineCount);
+   If LineCount = 50 then
+    begin
+     Inc(PageCount);
+     LineCount := 0;
+     Writeln(Lst,'----------------------------------------------------------------------------------------------------------');
+     Write(Lst,#12);
+     SummaryHeading;
+    end;
+
+   Coll.Next;
+  end;
+
+ Writeln(Lst,'----------------------------------------------------------------------------------------------------------');
+ Writeln(Lst,'|                                                                           TOTAL  ',TotalORs:5,'  |',
+              Format (GrandTotal,'#,###,###.##'),'|');
+ Writeln(Lst,'----------------------------------------------------------------------------------------------------------');
+
+ If LineCount > 0 then Write(Lst,#12);
+
+ Coll.Close;
+
+ CloseFile(Lst);
+ MessageDlg('Printing done.', mtInformation, [mbOK], 0);
+end;
+
+procedure TMenuForm.FormShow(Sender: TObject);
+Var Restructure : TMyQuery;
+
+begin
+
+  Restructure := TMyQuery.Create(self);
+  Restructure.Connection := BillingData.MyConnection1;
+  Restructure.SQL.Clear;
+  Restructure.SQL.Add('ALTER TABLE `zaneco`.`deposit` ADD COLUMN `BankRemit` VARCHAR(1) DEFAULT 0 AFTER `Amount`');
+
+  Try
+  Restructure.Execute;
+  except
+  end;
+
+  Restructure.SQL.Clear;
+  Restructure.SQL.Add('CREATE TABLE  `zaneco`.`dcprcoh` (');
+  Restructure.SQL.Add('  `iddcprCOH` int(10) unsigned NOT NULL auto_increment,');
+  Restructure.SQL.Add('  `COHDate` date default NULL,');
+  Restructure.SQL.Add('  `FB` double(12,2) default "0.00",');
+  Restructure.SQL.Add('  `Collection` double(12,2) default "0.00",');
+  Restructure.SQL.Add('  `Redeposit` double(12,2) default "0.00",');
+  Restructure.SQL.Add('  `Total` double(12,2) default "0.00",');
+  Restructure.SQL.Add('  `Deposit` double(12,2) default "0.00",');
+  Restructure.SQL.Add('  `Balance` double(12,2) default "0.00",');
+  Restructure.SQL.Add('  `CollectionDate` date default NULL,');
+  Restructure.SQL.Add('  PRIMARY KEY  (`iddcprCOH`)');
+  Restructure.SQL.Add(') ENGINE=InnoDB DEFAULT CHARSET=latin1;');
+
+  Try
+  Restructure.Execute;
+  except
+  end;
+
+  DoubleBuffered := True;
+  TransactionDateFrom.Date := Now;
+end;
+
+procedure TMenuForm.PDJSillyLabel4Click(Sender: TObject);
+Var TotalRemit, TotalOthers : Currency;
+
+begin
+ if MessageDlg('Set Printer on ..... Proceed?', mtConfirmation, [mbOK,mbCancel], 0) = mrCancel then
+ exit;
+
+  if not(PrinterSetupDialog1.Execute) then Exit;
+
+  PrinterName := '';
+
+    Try
+      Printer.GetPrinter(Device,Driver,Port,varHandle);
+      I := 0;
+      While Port[I] <> #0 do
+        begin
+         PrinterName := PrinterName + Port[I];
+         Inc(I);
+        end;
+      AssignFile(Lst,PrinterName);
+
+      Rewrite(Lst);
+    except
+      ShowMessage('Printer not Ready');
+      Exit;
+    end;
+
+ Recap.Close;
+ Recap.ParamByName('DatePaidFrom').AsDate  := TransactionDateFrom.Date;
+ If ReportOption.ItemIndex = 0 then
+ Recap.ParamByName('DatePaidTo').AsDate    := TransactionDateFrom.Date else
+ Recap.ParamByName('DatePaidTo').AsDate    := TransactionDateTo.Date;
+ Recap.Open;
+
+ If Recap.IsEmpty then
+   begin
+    MessageDlg('No data to print. Please enter correct date.', mtInformation, [mbOK], 0);
+    Recap.Close;
+    exit;
+   end;
+
+ Recap1.Close;
+ Recap1.ParamByName('DatePaidFrom').AsDate  := TransactionDateFrom.Date;
+ If ReportOption.ItemIndex = 0 then
+ Recap1.ParamByName('DatePaidTo').AsDate    := TransactionDateFrom.Date else
+ Recap1.ParamByName('DatePaidTo').AsDate    := TransactionDateTo.Date;
+ Recap1.Open;
+
+ Recap2.Close;
+ Recap2.ParamByName('DatePaidFrom').AsDate  := TransactionDateFrom.Date;
+ If ReportOption.ItemIndex = 0 then
+ Recap2.ParamByName('DatePaidTo').AsDate    := TransactionDateFrom.Date else
+ Recap2.ParamByName('DatePaidTo').AsDate    := TransactionDateTo.Date;
+ Recap2.Open;
+
+ LineCount := 0;
+ Write(Lst,#18,#27+'P');
+
+ If ReportOption.ItemIndex = 0 then
+ Writeln(Lst,#27+'E','CASHIER''S DAILY COLLECTION REPORT RECAP',#27+'F') else
+ Writeln(Lst,#27+'E','CASHIER''S MONTHLY COLLECTION REPORT RECAP',#27+'F');
+ Writeln(Lst,'Cashier Name      : ',SetForm.TellerName.Text);
+ If ReportOption.ItemIndex = 0 then
+ Writeln(Lst,'Collection Date   : ',DateToStr(TransactionDateFrom.Date)) else
+ Writeln(Lst,'Period Covered    : ',DateToStr(TransactionDateFrom.Date),'-',DateToStr(TransactionDateTo.Date));
+ Writeln(Lst,'----------------------------------------------------------------');
+ Writeln(Lst,'| Account Code  |      Payment Description     |        Amount |');
+ Writeln(Lst,'----------------------------------------------------------------');
+ Recap.First;
+ GrandTotal  := 0;
+ TotalRemit  := 0;
+ TotalOthers := 0;
+
+ While not Recap.Eof do
+  begin
+
+  Writeln(Lst,'|',JustStr(Recapcode.Text,' ',15,0),
+              '|',JustStr(RecapOPDescription.Text,' ',30,0),
+              '|',Format(RecapTAmount.AsCurrency,'##,###,###.##'),'|');
+
+  GrandTotal := GrandTotal + RecapTAmount.AsCurrency;
+  TotalRemit := TotalRemit + RecapTAmount.AsCurrency;
+
+  Inc(LineCount);
+  If LineCount = 50 then
+   begin
+      Writeln(Lst,'----------------------------------------------------------------');
+      LineCount := 0;
+      Write(Lst,#12);
+      If ReportOption.ItemIndex = 0 then
+      Writeln(Lst,#27+'E','CASHIER''S DAILY COLLECTION REPORT RECAP',#27+'F') else
+      Writeln(Lst,#27+'E','CASHIER''S MONTHLY COLLECTION REPORT RECAP',#27+'F');
+      Writeln(Lst,'Cashier Name      : ',SetForm.TellerName.Text);
+      If ReportOption.ItemIndex = 0 then
+      Writeln(Lst,'Collection Date   : ',DateToStr(TransactionDateFrom.Date)) else
+      Writeln(Lst,'Period Covered    : ',DateToStr(TransactionDateFrom.Date),'-',DateToStr(TransactionDateTo.Date));
+      Writeln(Lst,'----------------------------------------------------------------');
+      Writeln(Lst,'| Account Code  |      Payment Description     |        Amount |');
+      Writeln(Lst,'----------------------------------------------------------------');
+   end;
+
+  Recap.Next;
+  end;
+
+ Writeln(Lst,'----------------------------------------------------------------');
+ Writeln(Lst,'|Total Remittance                              |',
+              Format(TotalRemit,'##,###,###.##'),'|');
+ Writeln(Lst,'----------------------------------------------------------------');
+
+ While not Recap1.Eof do
+  begin
+
+  Writeln(Lst,'|',JustStr(Recap1code.Text,' ',15,0),
+              '|',JustStr(Recap1OPDescription.Text,' ',30,0),
+              '|',Format(Recap1TAmount.AsCurrency,'##,###,###.##'),'|');
+
+  GrandTotal  := GrandTotal + Recap1TAmount.AsCurrency;
+  TotalOthers := TotalOthers + Recap1TAmount.AsCurrency;
+
+  Inc(LineCount);
+  If LineCount = 50 then
+   begin
+      Writeln(Lst,'----------------------------------------------------------------');
+      LineCount := 0;
+      Write(Lst,#12);
+      If ReportOption.ItemIndex = 0 then
+      Writeln(Lst,#27+'E','CASHIER''S DAILY COLLECTION REPORT RECAP',#27+'F') else
+      Writeln(Lst,#27+'E','CASHIER''S MONTHLY COLLECTION REPORT RECAP',#27+'F');
+      Writeln(Lst,'Cashier Name      : ',SetForm.TellerName.Text);
+      If ReportOption.ItemIndex = 0 then
+      Writeln(Lst,'Collection Date   : ',DateToStr(TransactionDateFrom.Date)) else
+      Writeln(Lst,'Period Covered    : ',DateToStr(TransactionDateFrom.Date),'-',DateToStr(TransactionDateTo.Date));
+      Writeln(Lst,'----------------------------------------------------------------');
+      Writeln(Lst,'| Account Code  |      Payment Description     |        Amount |');
+      Writeln(Lst,'----------------------------------------------------------------');
+   end;
+
+  Recap1.Next;
+  end;
+
+ Writeln(Lst,'----------------------------------------------------------------');
+ Writeln(Lst,'|Total Other Income                            |',
+              Format(TotalOthers,'##,###,###.##'),'|');
+ Writeln(Lst,'----------------------------------------------------------------');
+ Writeln(Lst,'|Grand Total                                   |',
+              Format(GrandTotal,'##,###,###.##'),'|');
+ Writeln(Lst,'----------------------------------------------------------------');
+
+ If LineCount > 30 then Write(Lst,#12);
+
+ Write(Lst,#18,#27+'P');
+ Writeln(Lst,'------------------------------------------------------');
+ Writeln(Lst,'|  TOTAL POWER SALES |               |',Format(Recap2TotalBill.AsCurrency,'##,###,###.##'),'|');
+ Writeln(Lst,'------------------------------------------------------');
+ Writeln(Lst,'|   UC ENVIRONMENTAL |',Format(Recap2ucec.AsCurrency,'##,###,###.##'),'|               |');
+ Writeln(Lst,'|      UC MISSIONARY |',Format(Recap2ucme.AsCurrency,'##,###,###.##'),'|',Format(Recap2ucme.AsCurrency+Recap2ucec.AsCurrency,'##,###,###.##'),'|');
+ Writeln(Lst,'------------------------------------------------------');
+ Writeln(Lst,'|          VAT GENCO |',Format(Recap2VATGenCO.AsCurrency,'##,###,###.##'),'|               |');
+ Writeln(Lst,'|        VAT TRANSCO |',Format(Recap2VATTransCO.AsCurrency,'##,###,###.##'),'|               |');
+ Writeln(Lst,'|    VAT SYSTEM LOSS |',Format(Recap2VATSystemLoss.AsCurrency,'##,###,###.##'),'|               |');
+ Writeln(Lst,'|   VAT DISTRIBUTION |',Format(Recap2VATDist.AsCurrency,'##,###,###.##'),'|');
+ Writeln(Lst,'|                    |               |',Format(Recap2VAT.AsCurrency,'##,###,###.##'),'|');
+ Writeln(Lst,'------------------------------------------------------');
+ Writeln(Lst,'| MEMBER CONT CAPEX  |               |',Format(Recap2mcc.AsCurrency,'##,###,###.##'),'|               |');
+ Writeln(Lst,'| SYSTEM LOSS CHARGE |               |',Format(Recap2SystemLossCharge.AsCurrency,'##,###,###.##'),'|');
+ Writeln(Lst,'| TRANSFORMER RENTAL |               |',Format(Recap2transformerrental.AsCurrency,'##,###,###.##'),'|');
+ Writeln(Lst,'| PANTAWID RECOVERY  |               |',Format(Recap2PKVRAmount.AsCurrency,'##,###,###.##'),'|');
+ Writeln(Lst,'------------------------------------------------------');
+ Writeln(Lst,'| NET POWER SALES    |               |',Format(Recap2totalnet.AsCurrency,'##,###,###.##'),'|');
+ Writeln(Lst,'------------------------------------------------------');
+ Write(Lst,#18,#27+'P');
+ Writeln(Lst);
+ Writeln(Lst);
+ Writeln(Lst,'    Prepared by:                      Checked by:');
+ Writeln(Lst);
+ Writeln(Lst,'    ',JustStr(PreparedName.Text,' ',30,0),'    ',
+                    JustStr(CheckedName.Text,' ',30,0));
+ Writeln(Lst,'    ',JustStr(PreparedPos.Text,' ',30,0),'    ',
+                    JustStr(CheckPos.Text,' ',30,0));
+ Writeln(Lst);
+ Writeln(Lst);
+ Writeln(Lst,'        Reviewed by:                      Audited by:');
+ Writeln(Lst);
+ Writeln(Lst,'        ',JustStr(ReviewedName.Text,' ',30,0),'    ',
+                        JustStr(AuditedName.Text,' ',30,0));
+ Writeln(Lst,'        ',JustStr(ReviewedPos.Text,' ',30,0),'    ',
+                        JustStr(AuditedPos.Text,' ',30,0));
+ Writeln(Lst);
+ Writeln(Lst);
+ Writeln(Lst,' ':20,'Attested by:');
+ Writeln(Lst);
+ Writeln(Lst,' ':20,JustStr(AttestedName.Text,' ',30,2));
+ Writeln(Lst,' ':20,JustStr(AttestedPos.Text,' ',30,2));
+ Write(Lst,#12);
+
+ Recap.Close;
+ Recap1.Close;
+ Recap2.Close;
+
+ CloseFile(Lst);
+ MessageDlg('Printing done.', mtInformation, [mbOK], 0);
+
+end;
+
+procedure TMenuForm.Recap2CalcFields(DataSet: TDataSet);
+begin
+  Recap2totalnet.AsCurrency := Recap2TotalBill.AsCurrency -
+                               (Recap2ucec.AsCurrency +
+                                Recap2ucme.AsCurrency +
+                                Recap2VATDist.AsCurrency +
+                                Recap2VATGenCO.AsCurrency +
+                                Recap2VATTransCO.AsCurrency +
+                                Recap2VATSystemLoss.AsCurrency +
+                                Recap2SystemLossCharge.AsCurrency +
+                                Recap2transformerrental.AsCurrency +
+                                Recap2mcc.AsCurrency);
+end;
+
+procedure TMenuForm.ReportOptionClick(Sender: TObject);
+begin
+  If ReportOption.ItemIndex = 0 then
+    begin
+      TransactionDateTo.Enabled := False;
+      TransactionDateFrom.Date  := Now;
+      TransactionDateFrom.SetFocus;
+    end
+    else
+    begin
+      TransactionDateTo.Enabled := True;
+      TransactionDateFrom.Date  := StartOfTheMonth(Now);
+      TransactionDateTo.Date    := EndOfTheMonth(Now);
+      TransactionDateFrom.SetFocus;
+    end;
+end;
+
+procedure TMenuForm.ReceiptPrintingClick(Sender: TObject);
+begin
+If not assigned(AckrTORForm) then
+ AckrTORForm := TAckrTORForm.Create(Application);
+ AckrTORForm.Show;
+end;
+
+procedure TMenuForm.DepositBtnClick(Sender: TObject);
+begin
+  Try
+    CreateDeposit.Execute;
+  except
+  end;
+ If not assigned(DepositSlipForm) then
+ DepositSlipForm := TDepositSlipForm.Create(Application);
+ DepositSlipForm.ShowModal;
+end;
+
+procedure TMenuForm.COHAccountButtonClick(Sender: TObject);
+begin
+   SelectAccountFromForm(COHAccount.Text);
+   COHAccount.Text := AccountChartForm.MyChartCode.Text;
+   AccountChartForm.MyChart.Close;
+   COHAccount.SetFocus;
+end;
+
+procedure TMenuForm.NxButton1Click(Sender: TObject);
+Var GrandTotalAR      : Currency;
+    GrandTotalOthers  : Currency;
+    GrandTotalDeposit : Currency;
+    ShortOverCredit   : Currency;
+    ShortOverDebit    : Currency;
+    CashOnHand        : Currency;
+
+Procedure Heading;
+begin
+ If ReportOption.ItemIndex = 0 then
+ Writeln(Lst,#27+'E','DAILY CASH RECEIPTS RECAP',#27+'F') else
+ Writeln(Lst,#27+'E','MONTHLY CASH RECEIPTS RECAP',#27+'F');
+ Writeln(Lst,'Cashier Name      : ',SetForm.TellerName.Text);
+ If ReportOption.ItemIndex = 0 then
+ Writeln(Lst,'Collection Date   : ',DateToStr(TransactionDateFrom.Date)) else
+ Writeln(Lst,'Period Covered    : ',DateToStr(TransactionDateFrom.Date),'-',DateToStr(TransactionDateTo.Date));
+ Writeln(Lst,#27+'E','ACCOUNTING ENTRIES',#27+'F');
+ Writeln(Lst,'--------------------------------------------------------------------------------');
+ Writeln(Lst,'| Account Code  |         Description          |         Debit |        Credit |');
+ Writeln(Lst,'--------------------------------------------------------------------------------');
+end;
+
+Procedure CountLine;
+begin
+
+    Inc(LineCount);
+    If LineCount = 45 then
+     begin
+       LineCount := 0;
+       Write(Lst,#12);
+       Heading;
+     end;
+
+end;
+
+begin
+ If COHAccount.Text = '' then
+  begin
+   MessageDlg('No Cash on Hand Account....', mtError, [mbOK], 0);
+   exit;
+  end;
+
+ If SCConsAR.Text = '' then
+  begin
+   MessageDlg('No A/R Account....', mtError, [mbOK], 0);
+   exit;
+  end;
+
+ if MessageDlg('Set Printer on ..... Proceed?', mtConfirmation, [mbOK,mbCancel], 0) = mrCancel then
+ exit;
+
+  if not(PrinterSetupDialog1.Execute) then Exit;
+
+  PrinterName := '';
+
+    Try
+      Printer.GetPrinter(Device,Driver,Port,varHandle);
+      I := 0;
+      While Port[I] <> #0 do
+        begin
+         PrinterName := PrinterName + Port[I];
+         Inc(I);
+        end;
+      AssignFile(Lst,PrinterName);
+      Rewrite(Lst);
+    except
+      ShowMessage('Printer not Ready');
+      Exit;
+    end;
+
+ Recap.Close;
+ Recap.ParamByName('DatePaidFrom').AsDate  := TransactionDateFrom.Date;
+ If ReportOption.ItemIndex = 0 then
+ Recap.ParamByName('DatePaidTo').AsDate    := TransactionDateFrom.Date else
+ Recap.ParamByName('DatePaidTo').AsDate    := TransactionDateTo.Date;
+ Recap.Open;
+
+ If Recap.IsEmpty then
+   begin
+    MessageDlg('No data to print. Please enter correct date.', mtInformation, [mbOK], 0);
+    Recap.Close;
+    exit;
+   end;
+
+ Recap1.Close;
+ Recap1.ParamByName('DatePaidFrom').AsDate  := TransactionDateFrom.Date;
+ If ReportOption.ItemIndex = 0 then
+ Recap1.ParamByName('DatePaidTo').AsDate    := TransactionDateFrom.Date else
+ Recap1.ParamByName('DatePaidTo').AsDate    := TransactionDateTo.Date;
+ Recap1.Open;
+
+ Recap2.Close;
+ Recap2.ParamByName('DatePaidFrom').AsDate  := TransactionDateFrom.Date;
+ If ReportOption.ItemIndex = 0 then
+ Recap2.ParamByName('DatePaidTo').AsDate    := TransactionDateFrom.Date else
+ Recap2.ParamByName('DatePaidTo').AsDate    := TransactionDateTo.Date;
+ Recap2.Open;
+
+ Deposit.Close;
+ Deposit.ParamByName('DateFrom').AsDate := TransactionDateFrom.Date;
+ If ReportOption.ItemIndex = 0 then
+ Deposit.ParamByName('DateTo').AsDate   := TransactionDateFrom.Date else
+ Deposit.ParamByName('DateTo').AsDate   := TransactionDateTo.Date;
+ Deposit.Open;
+
+ DepositBankRemit.Close;
+ DepositBankRemit.ParamByName('DateFrom').AsDate := TransactionDateFrom.Date;
+ If ReportOption.ItemIndex = 0 then
+ DepositBankRemit.ParamByName('DateTo').AsDate   := TransactionDateFrom.Date else
+ DepositBankRemit.ParamByName('DateTo').AsDate   := TransactionDateTo.Date;
+ DepositBankRemit.Open;
+
+ ReturnCheck.Open;
+
+ LineCount := 0;
+ Write(Lst,#18,#27+'P');
+
+ Heading;
+
+ Recap.First;
+
+ GrandTotalAR      := 0;
+ GrandTotalOthers  := 0;
+ GrandTotalDeposit := 0;
+ CashOnHand        := 0;
+
+ While not Recap.Eof do
+  begin
+
+  If TRIM(RecapOPDescription.Text) <> 'BANK REMITTANCE' then CashOnHand := CashOnHand + RecapTAmount.AsCurrency;
+  GrandTotalAR := GrandTotalAR + RecapTAmount.AsCurrency;
+
+  Recap.Next;
+  end;
+
+ NoCash.Close;
+ NoCash.ParamByName('DatePaidFrom').AsDate  := TransactionDateFrom.Date;
+ If ReportOption.ItemIndex = 0 then
+ NoCash.ParamByName('DatePaidTo').AsDate    := TransactionDateFrom.Date else
+ NoCash.ParamByName('DatePaidTo').AsDate    := TransactionDateTo.Date;
+ NoCash.Open;
+
+ If not NoCash.IsEmpty then CashOnHand := CashOnHand - NoCashTAmount.AsCurrency;
+
+ PartialDeposit.Close;
+
+ PartialDeposit.Close;
+ PartialDeposit.ParamByName('DateFrom').AsDate  := TransactionDateFrom.Date;
+ If ReportOption.ItemIndex = 0 then
+ PartialDeposit.ParamByName('DateTo').AsDate    := TransactionDateFrom.Date else
+ PartialDeposit.ParamByName('DateTo').AsDate    := TransactionDateTo.Date;
+ PartialDeposit.Open;
+
+ If not PartialDeposit.IsEmpty then
+   while not PartialDeposit.Eof do
+     begin
+      CashOnHand := CashOnHand - PartialDepositamount.AsCurrency;
+      PartialDeposit.Next;
+     end;
+
+ While not Recap1.Eof do
+  begin
+    GrandTotalOthers := GrandTotalOthers + Recap1TAmount.AsCurrency;
+    Recap1.Next;
+  end;
+
+ ShortOverCredit := 0;
+ ShortOverDebit  := 0;
+
+ Writeln(Lst,#27+'E','Collection Entries',#27+'F');
+ CountLine;
+ Writeln(Lst,'|',JustStr(COHAccount.Text,' ',15,0),
+             '|',JustStr('CASH ON HAND',' ',30,0),
+             '|',Format(CashOnHand+GrandTotalOthers,'##,###,###.##'),'|               |');
+
+ CountLine;
+
+ If not DepositBankRemit.IsEmpty then
+ begin
+   While not DepositBankRemit.Eof do
+    begin
+      Writeln(Lst,'|',JustStr(DepositBankRemitaccountcode.Text,' ',15,0),
+                  '|',JustStr(DepositBankRemitaccountdescription.Text,' ',30,0),
+                  '|',Format(DepositBankRemitamount.AsCurrency,'##,###,###.##'),'|               |');
+      CountLine;
+      DepositBankRemit.Next;
+    end;
+ end;
+
+ If not PartialDeposit.IsEmpty then
+ begin
+   While not PartialDeposit.Eof do
+    begin
+      Writeln(Lst,'|',JustStr(PartialDepositaccountcode.Text,' ',15,0),
+                  '|',JustStr(PartialDepositaccountdescription.Text,' ',30,0),
+                  '|',Format(PartialDepositamount.AsCurrency,'##,###,###.##'),'|               |');
+      CountLine;
+      PartialDeposit.Next;
+    end;
+ end;
+
+ Writeln(Lst,'|',JustStr(SCConsAR.Text,' ',15,0),
+             '|',JustStr('ACCOUNTS RECEIVABLE',' ',30,0),
+             '|               |',Format(GrandTotalAR-(Recap2ucec.AsCurrency+
+                                                      Recap2ucme.AsCurrency+
+                                                      Recap2VATGenCO.AsCurrency+
+                                                      Recap2VATTransCO.AsCurrency+
+                                                      Recap2VATSystemLoss.AsCurrency+
+                                                      Recap2VATDist.AsCurrency+
+                                                      Recap2transformerrental.AsCurrency+
+                                                      Recap2mcc.AsCurrency),'##,###,###.##'),'|');
+ CountLine;
+ Writeln(Lst,'|',JustStr(SCARUCEC.Text,' ',15,0),
+             '|',JustStr('UC ENVIRONMENTAL',' ',30,0),
+             '|               |',Format(Recap2ucec.AsCurrency,'##,###,###.##'),'|');
+ CountLine;
+
+ Writeln(Lst,'|',JustStr(SCARUCME.Text,' ',15,0),
+             '|',JustStr('UC MISSIONARY',' ',30,0),
+             '|               |',Format(Recap2ucme.AsCurrency,'##,###,###.##'),'|');
+ CountLine;
+ Writeln(Lst,'|',JustStr(Format(Recap2ucme.AsCurrency+Recap2ucec.AsCurrency,'##,###,###.##'),' ',15,0),
+             '|',JustStr(' ',' ',30,0),
+             '|               |               |');
+ CountLine;
+
+ Writeln(Lst,'|',JustStr(SCARVatGenCo.Text,' ',15,0),
+             '|',JustStr('VAT GENCO',' ',30,0),
+             '|               |',Format(Recap2VATGenCO.AsCurrency,'##,###,###.##'),'|');
+
+ CountLine;
+ Writeln(Lst,'|',JustStr(SCARVatTransCo.Text,' ',15,0),
+             '|',JustStr('VAT TRANSCO',' ',30,0),
+             '|               |',Format(Recap2VATTransCO.AsCurrency,'##,###,###.##'),'|');
+
+ CountLine;
+ Writeln(Lst,'|',JustStr(SCARVatSystemLoss.Text,' ',15,0),
+             '|',JustStr('VAT SYSTEM LOSS',' ',30,0),
+             '|               |',Format(Recap2VATSystemLoss.AsCurrency,'##,###,###.##'),'|');
+
+ CountLine;
+ Writeln(Lst,'|',JustStr(SCARVatDist.Text,' ',15,0),
+             '|',JustStr('VAT DISTRIBUTION',' ',30,0),
+             '|               |',Format(Recap2VATDist.AsCurrency,'##,###,###.##'),'|');
+
+ CountLine;
+ Writeln(Lst,'|',JustStr(Format(Recap2VAT.AsCurrency,'##,###,###.##'),' ',15,0),
+             '|',JustStr(' ',' ',30,0),
+             '|               |               |');
+ CountLine;
+ Writeln(Lst,'|',JustStr(SCConsARMCC.Text,' ',15,0),
+             '|',JustStr('MEMBER CONT. FOR CAPEX',' ',30,0),
+             '|               |',Format(Recap2mcc.AsCurrency,'##,###,###.##'),'|');
+
+ CountLine;
+ Writeln(Lst,'|',JustStr(SCTransformerAR.Text,' ',15,0),
+             '|',JustStr('Transformer Rental',' ',30,0),
+             '|               |',Format(Recap2transformerrental.AsCurrency,'##,###,###.##'),'|');
+
+ CountLine;
+ Writeln(Lst,'|',JustStr(' ',' ',15,0),
+             '|',JustStr('OTHER INCOME',' ',30,0),
+             '|               |',Format(GrandTotalOthers,'##,###,###.##'),'|');
+ CountLine;
+ Writeln(Lst,'--------------------------------------------------------------------------------');
+
+ CountLine;
+ Writeln(Lst,#27+'E','Deposit Entries',#27+'F');
+
+ If not Deposit.IsEmpty then
+ begin
+
+   While not Deposit.Eof do
+    begin
+
+    Writeln(Lst,'|',JustStr(Depositaccountcode.Text,' ',15,0),
+                '|',JustStr(Depositaccountdescription.Text,' ',30,0),
+                '|',Format(Depositamount.AsCurrency,'##,###,###.##'),'|               |');
+
+    GrandTotalDeposit := GrandTotalDeposit + Depositamount.AsCurrency;
+    CountLine;
+
+    Deposit.Next;
+    end;
+ end;
+
+ If GrandTotalDeposit > CashOnHand+GrandTotalOthers then ShortOverCredit := GrandTotalDeposit - (CashOnHand+GrandTotalOthers);
+ If GrandTotalDeposit < CashOnHand+GrandTotalOthers then ShortOverDebit  := (CashOnHand+GrandTotalOthers) - GrandTotalDeposit;
+
+ Writeln(Lst,'|',JustStr(COHAccount.Text,' ',15,0),
+             '|',JustStr('CASH ON HAND',' ',30,0),
+             '|               |',Format(CashOnHand+GrandTotalOthers,'##,###,###.##'),'|');
+ CountLine;
+ If ShortOverCredit+ShortOverDebit <> 0 then
+ Writeln(Lst,'|',JustStr('321-423-00',' ',15,0),
+             '|',JustStr('INCOME FROM OVERAGES',' ',30,0),
+             '|',Format(ShortOverDebit,'##,###,###.##'),'|',Format(ShortOverCredit,'##,###,###.##'),'|');
+ CountLine;
+ Writeln(Lst,'--------------------------------------------------------------------------------');
+ CountLine;
+
+ If not ReturnCheck.IsEmpty then
+ begin
+   Writeln(Lst,#27+'E','Returned Checks',#27+'F');
+   CountLine;
+
+   While not ReturnCheck.Eof do
+    begin
+
+    Writeln(Lst,'|',JustStr(ReturnCheckAccountCode.Text,' ',15,0),
+                '|',JustStr(ReturnCheckAccountDescription.Text,' ',15,0),
+                '|',JustStr(ReturnCheckDescription.Text,' ',15,0),
+                '|',Format(ReturnCheckAmount.AsCurrency,'##,###,###.##'),'|');
+
+    CountLine;
+
+    ReturnCheck.Next;
+    end;
+ end;
+ Writeln(Lst,'--------------------------------------------------------------------------------');
+ CountLine;
+
+ Write(Lst,#18,#27+'P');
+ Writeln(Lst);
+ Writeln(Lst,'    Prepared by:                      Checked by:');
+ Writeln(Lst);
+ Writeln(Lst,'    ',JustStr(PreparedName.Text,' ',30,0),'    ',
+                    JustStr(CheckedName.Text,' ',30,0));
+ Writeln(Lst,'    ',JustStr(PreparedPos.Text,' ',30,0),'    ',
+                    JustStr(CheckPos.Text,' ',30,0));
+ Writeln(Lst);
+ Writeln(Lst,'        Reviewed by:                      Audited by:');
+ Writeln(Lst);
+ Writeln(Lst,'        ',JustStr(ReviewedName.Text,' ',30,0),'    ',
+                        JustStr(AuditedName.Text,' ',30,0));
+ Writeln(Lst,'        ',JustStr(ReviewedPos.Text,' ',30,0),'    ',
+                        JustStr(AuditedPos.Text,' ',30,0));
+ Writeln(Lst);
+ Writeln(Lst,' ':20,'Attested by:');
+ Writeln(Lst);
+ Writeln(Lst,' ':20,JustStr(AttestedName.Text,' ',30,2));
+ Writeln(Lst,' ':20,JustStr(AttestedPos.Text,' ',30,2));
+ Write(Lst,#12);
+
+ Recap.Close;
+ Recap1.Close;
+ Recap2.Close;
+ Deposit.Close;
+ DepositBankRemit.Close;
+ ReturnCheck.Close;
+ PartialDeposit.Close;
+
+ CloseFile(Lst);
+ MessageDlg('Printing done.', mtInformation, [mbOK], 0);
+
+end;
+
+procedure TMenuForm.NxButton3Click(Sender: TObject);
+begin
+  Signatory.edit;
+  signatoryPreparedByName.Text     := PreparedName.Text;
+  signatoryPreparedByPosition.Text := PreparedPos.Text ;
+
+  signatoryCheckedByName.Text      := CheckedName.Text ;
+  signatoryCheckedByPosition.Text  := CheckPos.Text    ;
+
+  signatoryReviewedByName.Text     := ReviewedName.Text;
+  signatoryReviewedByPosition.Text := ReviewedPos.Text ;
+
+  signatoryAuditedByName.Text      := AuditedName.Text ;
+  signatoryAuditedByPostion.Text   := AuditedPos.Text  ;
+
+  signatoryAttestedByName.Text     := AttestedName.Text;
+  signatoryAttestedByPosition.Text := AttestedPos.Text ;
+
+  signatoryCOHAccountcoce.Text     := COHAccount.Text;
+
+  signatory.Post;
+end;
+
+procedure TMenuForm.NxButton2Click(Sender: TObject);
+type
+cashreceipt = record
+crdate          : TDate                       ;
+crdescription   : String[50]                  ;
+cramount        : Currency                    ;
+craccountdate   : Array[1..100] of TDate      ;
+craccountcode   : Array[1..100] of string[20] ;
+crdebit         : Array[1..100] of Currency   ;
+crcredit        : Array[1..100] of Currency   ;
+doctype         : Array[1..100] of Integer    ;
+Document        : string[50]                  ;
+end;
+
+Var GrandTotalAR      : Currency    ;
+    GrandTotalOthers  : Currency    ;
+    GrandTotalDeposit : Currency    ;
+    ShortOverCredit   : Currency    ;
+    ShortOverDebit    : Currency    ;
+    I                 : Word        ;
+    CRRecord          : CashReceipt ;
+    CRFile            : File        ;
+    Days              : Word        ;
+    OICount           : Word        ;
+
+begin
+
+ If COHAccount.Text = '' then
+  begin
+   MessageDlg('No Cash on Hand Account....', mtError, [mbOK], 0);
+   exit;
+  end;
+
+ If SCConsAR.Text = '' then
+  begin
+   MessageDlg('No A/R Account....', mtError, [mbOK], 0);
+   exit;
+  end;
+
+ If ReportOption.ItemIndex = 0 then
+    Days := 1 else Days := DaysBetween(TransactionDateFrom.Date,TransactionDateTo.Date)+1;
+
+ if not(OpenDialog1.Execute) then Exit;
+
+ AssignFile(CRFile,OpenDialog1.FileName);
+ Rewrite(CRFile,SizeOf(CashReceipt));
+
+ NxMemo1.Lines.Clear;
+ NxMemo1.Left := 228;
+ NxMemo1.Top  := 48;
+ NxMemo1.Visible := True;
+ NxMemo1.BringToFront;
+
+ For I := 1 to Days do
+  begin
+
+    FillChar(CRRecord,SizeOf(CRRecord),#0);
+
+    With CRRecord do
+    begin
+
+        crdate          := TransactionDateFrom.Date+(I-1);
+        crdescription   := OpenDialog1.FileName + ' CASH RECEIPT';
+        Document        :=  '1';
+
+        Recap.Close;
+        Recap.ParamByName('DatePaidFrom').AsDate   := TransactionDateFrom.Date+(I-1);
+        Recap.ParamByName('DatePaidTo').AsDate     := TransactionDateFrom.Date+(I-1);
+        Recap.Open;
+
+
+        If Recap.IsEmpty then
+          begin
+           NXMemo1.Lines.Add('No transaction for '+DateToStr(TransactionDateFrom.Date+(I-1))+'-'+FormatDateTime('DDDD',TransactionDateFrom.Date+(I-1)));
+           Recap.Close;
+           continue;
+          end;
+
+        Recap2.Close;
+        Recap2.ParamByName('DatePaidFrom').AsDate   := TransactionDateFrom.Date+(I-1);
+        Recap2.ParamByName('DatePaidTo').AsDate     := TransactionDateFrom.Date+(I-1);
+        Recap2.Open;
+
+        CRRecap.Close;
+        CRRecap.ParamByName('DatePaidFrom').AsDate := TransactionDateFrom.Date+(I-1);
+        CRRecap.ParamByName('DatePaidTo').AsDate   := TransactionDateFrom.Date+(I-1);
+        CRRecap.Open;
+
+        Recap.First;
+
+        GrandTotalAR      := 0;
+        GrandTotalOthers  := 0;
+        GrandTotalDeposit := 0;
+
+        While not Recap.Eof do
+         begin
+         GrandTotalAR := GrandTotalAR + RecapTAmount.AsCurrency;
+         Recap.Next;
+         end;
+
+        OICount          := 9;
+
+        While not CRRecap.Eof do
+         begin
+          Inc(OICount);
+          craccountdate[OICount] := TransactionDateFrom.Date+(I-1);
+          craccountcode[OICount] := CRRecapcode.Text;
+          crdebit[OICount]       := 0;
+          crcredit[OICount]      := CRRecapTAmount.AsCurrency;
+          GrandTotalOthers       := GrandTotalOthers + CRRecapTAmount.AsCurrency;
+          CRRecap.Next;
+         end;
+
+        craccountdate[1] := TransactionDateFrom.Date+(I-1);
+        craccountcode[1] := COHAccount.Text;
+        crdebit[1]       := GrandTotalAR+GrandTotalOthers;
+        crcredit[1]      := 0;
+
+        craccountdate[2] := TransactionDateFrom.Date+(I-1);
+        craccountcode[2] := copy(SCConsAR.Text,1,10);
+        crdebit[2]       := 0;
+        crcredit[2]      := GrandTotalAR-(Recap2ucec.AsCurrency+
+                                          Recap2ucme.AsCurrency+
+                                          Recap2VATGenCO.AsCurrency+
+                                          Recap2VATTransCO.AsCurrency+
+                                          Recap2VATSystemLoss.AsCurrency+
+                                          Recap2VATDist.AsCurrency+
+                                          Recap2mcc.AsCurrency+
+                                          Recap2transformerrental.AsCurrency);
+
+        craccountdate[3] := TransactionDateFrom.Date+(I-1);
+        craccountcode[3] := copy(SCARUCEC.Text,1,10);
+        crdebit[3]       := 0;
+        crcredit[3]      := Recap2ucec.AsCurrency;
+
+        craccountdate[4] := TransactionDateFrom.Date+(I-1);
+        craccountcode[4] := copy(SCARUCME.Text,1,10);
+        crdebit[4]       := 0;
+        crcredit[4]      := Recap2ucme.AsCurrency;
+
+        craccountdate[5] := TransactionDateFrom.Date+(I-1);
+        craccountcode[5] := copy(SCARVatGenCo.Text,1,10);
+        crdebit[5]       := 0;
+        crcredit[5]      := Recap2VATGenCO.AsCurrency;
+
+        craccountdate[6] := TransactionDateFrom.Date+(I-1);
+        craccountcode[6] := copy(SCARVatTransCo.Text,1,10);
+        crdebit[6]       := 0;
+        crcredit[6]      := Recap2VATTransCO.AsCurrency;
+
+        craccountdate[7] := TransactionDateFrom.Date+(I-1);
+        craccountcode[7] := copy(SCARVatSystemLoss.Text,1,10);
+        crdebit[7]       := 0;
+        crcredit[7]      := Recap2VATSystemLoss.AsCurrency;
+
+        craccountdate[8] := TransactionDateFrom.Date+(I-1);
+        craccountcode[8] := copy(SCARVatDist.Text,1,10);
+        crdebit[8]       := 0;
+        crcredit[8]      := Recap2VATDist.AsCurrency;
+
+        craccountdate[9] := TransactionDateFrom.Date+(I-1);
+        craccountcode[9] := copy(SCConsARMCC.Text,1,10);
+        crdebit[9]       := 0;
+        crcredit[9]      := Recap2mcc.AsCurrency;
+
+        craccountdate[10]:= TransactionDateFrom.Date+(I-1);
+        craccountcode[10]:= copy(SCTransformerAR.Text,1,10);
+        crdebit[10]      := 0;
+        crcredit[10]     := Recap2transformerrental.AsCurrency;
+
+        BlockWrite(CRFile,CRRecord,1);
+
+        NxMemo1.Lines.Add('Data Transfer for '+DateToStr(TransactionDateFrom.Date+(I-1))+' created');
+        NxMemo1.Lines.Add('Number of Cash Data Transfer created '+IntToStr(FileSize(CRFile)));
+    end;
+    FillChar(CRRecord,SizeOf(CRRecord),#0);
+
+    With CRRecord do
+    begin
+
+        crdate          := TransactionDateFrom.Date+(I-1);
+        crdescription   := OpenDialog1.FileName + ' CASH DEPOSIT';
+
+        Deposit.Close;
+        Deposit.ParamByName('DateFrom').AsDate     := TransactionDateFrom.Date+(I-1);
+        Deposit.ParamByName('DateTo').AsDate       := TransactionDateFrom.Date+(I-1);
+        Deposit.Open;
+
+        If Deposit.IsEmpty then
+          begin
+           NXMemo1.Lines.Add('No deposits entered on '+DateToStr(TransactionDateFrom.Date+(I-1))+'-'+FormatDateTime('DDDD',TransactionDateFrom.Date+(I-1)));
+           Recap.Close;
+           CRRecap.Close;
+           Deposit.Close;
+           Continue;
+          end;
+
+        OICount          := 2;
+
+        While not Deposit.Eof do
+         begin
+          Inc(OICount);
+          craccountdate[OICount] := Depositdepositdate.AsDateTime;
+          craccountcode[OICount] := Depositaccountcode.Text;
+          crdebit[OICount]       := Depositamount.AsCurrency;
+          crcredit[OICount]      := 0;
+          doctype[OICount]       := 1;
+          GrandTotalDeposit := GrandTotalDeposit + Depositamount.AsCurrency;
+          Deposit.Next;
+         end;
+
+        ShortOverCredit := 0;
+        ShortOverDebit  := 0;
+
+        If GrandTotalDeposit > GrandTotalAR+GrandTotalOthers then ShortOverCredit := GrandTotalDeposit - (GrandTotalAR+GrandTotalOthers);
+        If GrandTotalDeposit < GrandTotalAR+GrandTotalOthers then ShortOverDebit  := (GrandTotalAR+GrandTotalOthers) - GrandTotalDeposit;
+
+        cramount        :=  GrandTotalAR+GrandTotalOthers;
+
+        Inc(OICount);
+        craccountdate[OICount] := TransactionDateFrom.Date+(I-1);
+        craccountcode[OICount] := COHAccount.Text;
+        crdebit[OICount]       := 0;
+        crcredit[OICount]      := GrandTotalAR+GrandTotalOthers;
+        doctype[oicount]       := 1;
+        Inc(OICount);
+        If ShortOverCredit+ShortOverDebit <> 0 then
+        craccountdate[OICount] := TransactionDateFrom.Date+(I-1);
+        craccountcode[OICount] := '321-423-00';
+        crdebit[OICount]       := ShortOverDebit;
+        crcredit[OICount]      := ShortOverCredit;
+        doctype[oicount]       := 1;
+        Seek(CRFile,FileSize(CRFile));
+        BlockWrite(CRFile,CRRecord,1);
+
+        NxMemo1.Lines.Add('Data Transfer for '+DateToStr(TransactionDateFrom.Date+(I-1))+' created');
+        NxMemo1.Lines.Add('Number of Cash Data Transfer created '+IntToStr(FileSize(CRFile)));
+    end;
+  end;
+
+ CloseFile(CRFile);
+ MessageDlg('Data Transfer done.', mtInformation, [mbOK], 0);
+ NxMemo1.Visible := False;
+
+end;
+
+procedure TMenuForm.NxEdit1Change(Sender: TObject);
+begin
+  PClass.FilterSQL := 'DESCRIPTION LIKE '+QuotedStr('%'+NxEdit1.Text+'%');
+end;
+
+procedure TMenuForm.DCPRClick(Sender: TObject);
+begin
+If not assigned(DCPRForm) then
+ DCPRForm := TDCPRForm.Create(Application);
+ DCPRForm.Show;
+end;
+
+end.

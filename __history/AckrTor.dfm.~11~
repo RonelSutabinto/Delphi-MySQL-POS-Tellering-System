@@ -1,0 +1,1026 @@
+object AckrTORForm: TAckrTORForm
+  Left = 328
+  Top = 161
+  Caption = 'Acknowledgement Receipt to Teller OEBR Printing'
+  ClientHeight = 419
+  ClientWidth = 681
+  Color = 15395562
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'MS Sans Serif'
+  Font.Style = []
+  OldCreateOrder = False
+  Position = poScreenCenter
+  OnShow = FormShow
+  PixelsPerInch = 96
+  TextHeight = 13
+  object SearchAccount: TNxEdit
+    Left = 7
+    Top = 9
+    Width = 162
+    Height = 21
+    Glyph.Data = {
+      06030000424D060300000000000036000000280000000F0000000F0000000100
+      180000000000D002000000000000000000000000000000000000000000484342
+      5044440000000000000000000000000000000000000000000000000000000000
+      00000000000000000000312C265F80AD9785B07B666600000000000000000000
+      00000000000000000000000000000000000000000000000000001F283B5BD9FF
+      3479D69781A77C65640000000000000000000000000000000000000000000000
+      0000000000000000000000000040588A5BD4FF3378D69882A77B646200000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      41598B5BD6FF3277D69A85AB5542430000000000000000000000000000000000
+      0000000000000000000000000000000000000041578A59D8FF4E8BDA625F5E1E
+      191E917171C3A899D0B3A8856A7118181D000000000000000000000000000000
+      000000000000344775706573AF9695FECFA9FFFFD0FFFFD8FFFFE1FFFFE6CCA9
+      A4312D33000000000000000000000000000000000000000000050001FFD6AFFF
+      FAC7FFFAC5FFFFDBFFFFECFFFFFFFFFFFFB18E87030407000000000000000000
+      000000000000000000946F6CFFFFCCFFE0ACFFFCC9FFFFDFFFFFF3FFFFFBFFFF
+      EBF1DEBC3A3139000000000000000000000000000000000000FBCBB6FFF5C2FF
+      D7A3FFF7C3FFFFD8FFFFE6FFFFE8FFFFDFFFFBCD45343A000000000000000000
+      000000000000000000DBB3A0FFFDC9FFDDADFFE9B4FFFDCAFFFFD3FFFFD5FFFF
+      D0FFE8BC47343E000000000000000000000000000000000000725350FFFFE3FF
+      F8EAFFDEB4FFE6B1FFEBB7FFEBB6FFFFCAE7B59D0F010E000000000000000000
+      000000000000000000000000F2C9B8FFFFFFFFFAE0FFE1B0FFDFAAFFFBC7FFE0
+      B26038490000000000000000000000000000000000000000000000001E1213CD
+      A198FFE8C6FFFACCFFF7CAF6C4AC5E3B47000000000000000000000000000000
+      000000000000000000000000000000000000170D0F2B191B4229360000020000
+      00000000000000000000}
+    TabOrder = 0
+    OnKeyPress = SearchAccountKeyPress
+  end
+  object NxButton1: TNxButton
+    Left = 8
+    Top = 40
+    Width = 161
+    Height = 33
+    Caption = 'New'
+    TabOrder = 1
+    OnClick = NxButton1Click
+  end
+  object NxButton2: TNxButton
+    Left = 8
+    Top = 376
+    Width = 161
+    Height = 33
+    Caption = 'Close'
+    TabOrder = 2
+    OnClick = NxButton2Click
+  end
+  object CRDBGrid1: TCRDBGrid1
+    Left = 176
+    Top = 8
+    Width = 497
+    Height = 401
+    Ctl3D = False
+    DataSource = dsAckTor
+    Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit]
+    ParentCtl3D = False
+    ReadOnly = True
+    TabOrder = 3
+    TitleFont.Charset = DEFAULT_CHARSET
+    TitleFont.Color = clWindowText
+    TitleFont.Height = -11
+    TitleFont.Name = 'MS Sans Serif'
+    TitleFont.Style = []
+    Columns = <
+      item
+        Expanded = False
+        FieldName = 'DatePrinted'
+        Title.Caption = 'Date Printed'
+        Width = 64
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'Status'
+        Title.Alignment = taCenter
+        Width = 64
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'AccountNumber'
+        Title.Caption = 'Account #'
+        Width = 64
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'Name'
+        Width = 153
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'BillMonth'
+        Width = 47
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'BillNumber'
+        Width = 94
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'Amount'
+        Width = 64
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'AckReceiptNum'
+        Width = 94
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'ORNumber'
+        Width = 94
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'Cashier'
+        Width = 274
+        Visible = True
+      end>
+  end
+  object NewPanel: TNxHeaderPanel
+    Left = 160
+    Top = 36
+    Width = 325
+    Height = 294
+    Caption = 'New'
+    HeaderFont.Charset = DEFAULT_CHARSET
+    HeaderFont.Color = clWindowText
+    HeaderFont.Height = -11
+    HeaderFont.Name = 'MS Sans Serif'
+    HeaderFont.Style = []
+    ParentHeaderFont = False
+    TabOrder = 4
+    Visible = False
+    FullWidth = 325
+    object NxLabel1: TNxLabel
+      Left = 15
+      Top = 44
+      Width = 80
+      Height = 13
+      Caption = 'Account Number'
+      HorizontalPosition = hpLeft
+      InnerHorizontal = True
+      InnerVertical = False
+      InnerMargins.Horizontal = 0
+      InnerMargins.Vertical = 2
+      VerticalPosition = vpTop
+    end
+    object NxLabel2: TNxLabel
+      Left = 49
+      Top = 68
+      Width = 46
+      Height = 13
+      Caption = 'Bill Month'
+      HorizontalPosition = hpLeft
+      InnerHorizontal = True
+      InnerVertical = False
+      InnerMargins.Horizontal = 0
+      InnerMargins.Vertical = 2
+      VerticalPosition = vpTop
+    end
+    object NxLabel3: TNxLabel
+      Left = 67
+      Top = 140
+      Width = 28
+      Height = 13
+      Caption = 'Name'
+      HorizontalPosition = hpLeft
+      InnerHorizontal = True
+      InnerVertical = False
+      InnerMargins.Horizontal = 0
+      InnerMargins.Vertical = 2
+      VerticalPosition = vpTop
+    end
+    object NxLabel4: TNxLabel
+      Left = 42
+      Top = 164
+      Width = 53
+      Height = 13
+      Caption = 'Bill Number'
+      HorizontalPosition = hpLeft
+      InnerHorizontal = True
+      InnerVertical = False
+      InnerMargins.Horizontal = 0
+      InnerMargins.Vertical = 2
+      VerticalPosition = vpTop
+    end
+    object NxLabel5: TNxLabel
+      Left = 59
+      Top = 188
+      Width = 36
+      Height = 13
+      Caption = 'Amount'
+      HorizontalPosition = hpLeft
+      InnerHorizontal = True
+      InnerVertical = False
+      InnerMargins.Horizontal = 0
+      InnerMargins.Vertical = 2
+      VerticalPosition = vpTop
+    end
+    object NxLabel6: TNxLabel
+      Left = 37
+      Top = 92
+      Width = 58
+      Height = 13
+      Caption = 'Ack. Rec. #'
+      HorizontalPosition = hpLeft
+      InnerHorizontal = True
+      InnerVertical = False
+      InnerMargins.Horizontal = 0
+      InnerMargins.Vertical = 2
+      VerticalPosition = vpTop
+    end
+    object NxLabel7: TNxLabel
+      Left = 55
+      Top = 116
+      Width = 40
+      Height = 13
+      Caption = 'OEBR #'
+      HorizontalPosition = hpLeft
+      InnerHorizontal = True
+      InnerVertical = False
+      InnerMargins.Horizontal = 0
+      InnerMargins.Vertical = 2
+      VerticalPosition = vpTop
+    end
+    object NxLabel8: TNxLabel
+      Left = 36
+      Top = 212
+      Width = 59
+      Height = 13
+      Caption = 'Date Printed'
+      HorizontalPosition = hpLeft
+      InnerHorizontal = True
+      InnerVertical = False
+      InnerMargins.Horizontal = 0
+      InnerMargins.Vertical = 2
+      VerticalPosition = vpTop
+    end
+    object NxLabel9: TNxLabel
+      Left = 60
+      Top = 236
+      Width = 35
+      Height = 13
+      Caption = 'Cashier'
+      HorizontalPosition = hpLeft
+      InnerHorizontal = True
+      InnerVertical = False
+      InnerMargins.Horizontal = 0
+      InnerMargins.Vertical = 2
+      VerticalPosition = vpTop
+    end
+    object AccountNumber: TNxEdit
+      Left = 100
+      Top = 40
+      Width = 200
+      Height = 21
+      TabOrder = 0
+      OnKeyPress = AccountNumberKeyPress
+    end
+    object BillMonth: TNxEdit
+      Left = 100
+      Top = 64
+      Width = 200
+      Height = 21
+      TabOrder = 1
+      OnKeyPress = AccountNumberKeyPress
+    end
+    object ConsumerName: TNxEdit
+      Left = 100
+      Top = 136
+      Width = 200
+      Height = 21
+      TabOrder = 4
+      ReadOnly = True
+    end
+    object BillNumber: TNxEdit
+      Left = 100
+      Top = 160
+      Width = 200
+      Height = 21
+      TabOrder = 5
+      ReadOnly = True
+    end
+    object Amount: TNxEdit
+      Left = 100
+      Top = 184
+      Width = 200
+      Height = 21
+      TabOrder = 6
+      ReadOnly = True
+    end
+    object AckRec: TNxEdit
+      Left = 101
+      Top = 88
+      Width = 200
+      Height = 21
+      TabOrder = 2
+      OnKeyPress = AccountNumberKeyPress
+    end
+    object OEBRNumber: TNxEdit
+      Left = 100
+      Top = 112
+      Width = 200
+      Height = 21
+      TabOrder = 3
+      OnKeyPress = AccountNumberKeyPress
+    end
+    object NxButton3: TNxButton
+      Left = 53
+      Top = 261
+      Width = 105
+      Caption = 'Print OEBR'
+      TabOrder = 7
+      OnClick = NxButton3Click
+    end
+    object NxButton4: TNxButton
+      Left = 165
+      Top = 261
+      Width = 105
+      Caption = 'Cancel'
+      TabOrder = 8
+      OnClick = NxButton4Click
+    end
+    object NxDatePicker1: TNxDatePicker
+      Left = 100
+      Top = 208
+      Width = 200
+      Height = 21
+      TabOrder = 9
+      Text = '04/28/2010'
+      HideFocus = False
+      Date = 40296.000000000000000000
+      NoneCaption = 'None'
+      TodayCaption = 'Today'
+    end
+    object Cashier: TNxEdit
+      Left = 100
+      Top = 232
+      Width = 200
+      Height = 21
+      TabOrder = 10
+      ReadOnly = True
+    end
+  end
+  object AckTor: TMyQuery
+    Connection = BillingData.MyConnection1
+    SQL.Strings = (
+      'select * from acktor '
+      'where name like :name or '
+      '      accountnumber like :accountnumber'
+      'order by name')
+    Left = 8
+    Top = 80
+    ParamData = <
+      item
+        DataType = ftUnknown
+        Name = 'name'
+      end
+      item
+        DataType = ftUnknown
+        Name = 'accountnumber'
+      end>
+    object AckToridacktor: TLongWordField
+      FieldName = 'idacktor'
+    end
+    object AckTorAccountNumber: TStringField
+      FieldName = 'AccountNumber'
+      Size = 10
+    end
+    object AckTorName: TStringField
+      FieldName = 'Name'
+      Size = 50
+    end
+    object AckTorBillMonth: TStringField
+      FieldName = 'BillMonth'
+      Size = 4
+    end
+    object AckTorBillNumber: TStringField
+      FieldName = 'BillNumber'
+      Size = 15
+    end
+    object AckTorAmount: TFloatField
+      FieldName = 'Amount'
+    end
+    object AckTorAckReceiptNum: TStringField
+      FieldName = 'AckReceiptNum'
+      Size = 15
+    end
+    object AckTorORNumber: TStringField
+      FieldName = 'ORNumber'
+      Size = 15
+    end
+    object AckTorStatus: TStringField
+      FieldName = 'Status'
+      Size = 10
+    end
+    object AckTorDatePrinted: TDateField
+      FieldName = 'DatePrinted'
+    end
+    object AckTorCashier: TStringField
+      FieldName = 'Cashier'
+      Size = 45
+    end
+  end
+  object dsAckTor: TMyDataSource
+    DataSet = AckTor
+    Left = 8
+    Top = 112
+  end
+  object PBill: TMyQuery
+    Connection = BillingData.MyConnection1
+    SQL.Strings = (
+      
+        '(select * from billhistory where accountnumber = :accountnumber ' +
+        'and billmonth = :billmonth) '
+      ' union'
+      
+        '(select * from latebillhistory where accountnumber = :accountnum' +
+        'ber and billmonth = :billmonth)')
+    Left = 40
+    Top = 80
+    ParamData = <
+      item
+        DataType = ftUnknown
+        Name = 'accountnumber'
+      end
+      item
+        DataType = ftUnknown
+        Name = 'billmonth'
+      end
+      item
+        DataType = ftUnknown
+        Name = 'accountnumber'
+      end
+      item
+        DataType = ftUnknown
+        Name = 'billmonth'
+      end>
+    object PBillentry: TIntegerField
+      FieldName = 'entry'
+    end
+    object PBillCode: TFloatField
+      FieldName = 'Code'
+    end
+    object PBillArea: TStringField
+      FieldName = 'Area'
+      FixedChar = True
+      Size = 3
+    end
+    object PBillBook: TStringField
+      FieldName = 'Book'
+      FixedChar = True
+      Size = 3
+    end
+    object PBillSequence: TStringField
+      FieldName = 'Sequence'
+      Size = 4
+    end
+    object PBillAccountNumber: TStringField
+      FieldName = 'AccountNumber'
+      Size = 10
+    end
+    object PBillName: TStringField
+      FieldName = 'Name'
+      Size = 30
+    end
+    object PBillAddress: TStringField
+      FieldName = 'Address'
+      Size = 30
+    end
+    object PBillRateCode: TStringField
+      FieldName = 'RateCode'
+      FixedChar = True
+      Size = 1
+    end
+    object PBillSerial: TStringField
+      FieldName = 'Serial'
+    end
+    object PBillMultiplier: TFloatField
+      FieldName = 'Multiplier'
+    end
+    object PBillPreviousReadingDate: TDateField
+      FieldName = 'PreviousReadingDate'
+    end
+    object PBillPresentReadingDate: TDateField
+      FieldName = 'PresentReadingDate'
+    end
+    object PBillPreviousReadingKWH: TFloatField
+      FieldName = 'PreviousReadingKWH'
+    end
+    object PBillPresentReadingKWH: TFloatField
+      FieldName = 'PresentReadingKWH'
+    end
+    object PBillDiff: TFloatField
+      FieldName = 'Diff'
+    end
+    object PBillDemand: TFloatField
+      FieldName = 'Demand'
+    end
+    object PBillFlatRateWattage: TFloatField
+      FieldName = 'FlatRateWattage'
+    end
+    object PBillFeedBackCode: TStringField
+      FieldName = 'FeedBackCode'
+      FixedChar = True
+      Size = 2
+    end
+    object PBillCM: TStringField
+      FieldName = 'CM'
+      FixedChar = True
+      Size = 1
+    end
+    object PBillCMMultiplier: TFloatField
+      FieldName = 'CMMultiplier'
+    end
+    object PBillCMPreviousReadingKWH: TFloatField
+      FieldName = 'CMPreviousReadingKWH'
+    end
+    object PBillCMPresentReadingKWH: TFloatField
+      FieldName = 'CMPresentReadingKWH'
+    end
+    object PBillCMKilowattHour: TFloatField
+      FieldName = 'CMKilowattHour'
+    end
+    object PBillCMDemand: TFloatField
+      FieldName = 'CMDemand'
+    end
+    object PBillKilowattHour: TFloatField
+      FieldName = 'KilowattHour'
+    end
+    object PBillKilowattUsed: TFloatField
+      FieldName = 'KilowattUsed'
+    end
+    object PBillGenSysCharge: TFloatField
+      FieldName = 'GenSysCharge'
+    end
+    object PBillHostCommCharge: TFloatField
+      FieldName = 'HostCommCharge'
+    end
+    object PBillForexCharge: TFloatField
+      FieldName = 'ForexCharge'
+    end
+    object PBillTCDemandCharge: TFloatField
+      FieldName = 'TCDemandCharge'
+    end
+    object PBillTCTransSystemCharge: TFloatField
+      FieldName = 'TCTransSystemCharge'
+    end
+    object PBillSystemLossCharge: TFloatField
+      FieldName = 'SystemLossCharge'
+    end
+    object PBillDCDemandCharge: TFloatField
+      FieldName = 'DCDemandCharge'
+    end
+    object PBillDCDistributionCharge: TFloatField
+      FieldName = 'DCDistributionCharge'
+    end
+    object PBillSCRetCustCharge: TFloatField
+      FieldName = 'SCRetCustCharge'
+    end
+    object PBillSCSupplySysCharge: TFloatField
+      FieldName = 'SCSupplySysCharge'
+    end
+    object PBillMCRetailCustCharge: TFloatField
+      FieldName = 'MCRetailCustCharge'
+    end
+    object PBillMCSystemCharge: TFloatField
+      FieldName = 'MCSystemCharge'
+    end
+    object PBillUCNPCStrandedDebts: TFloatField
+      FieldName = 'UCNPCStrandedDebts'
+    end
+    object PBillUCNPCStrandedContCost: TFloatField
+      FieldName = 'UCNPCStrandedContCost'
+    end
+    object PBillUCDUStrandedContCost: TFloatField
+      FieldName = 'UCDUStrandedContCost'
+    end
+    object PBillUCME: TFloatField
+      FieldName = 'UCME'
+    end
+    object PBillUCEqTaxesAndRoyalties: TFloatField
+      FieldName = 'UCEqTaxesAndRoyalties'
+    end
+    object PBillUCEC: TFloatField
+      FieldName = 'UCEC'
+    end
+    object PBillUCCrossSubRemoval: TFloatField
+      FieldName = 'UCCrossSubRemoval'
+    end
+    object PBillICCrossSubsidyCharge: TFloatField
+      FieldName = 'ICCrossSubsidyCharge'
+    end
+    object PBillPowerActRateRed: TFloatField
+      FieldName = 'PowerActRateRed'
+    end
+    object PBillLifelineDiscSubs: TFloatField
+      FieldName = 'LifelineDiscSubs'
+    end
+    object PBillLoanCondo: TFloatField
+      FieldName = 'LoanCondo'
+    end
+    object PBillTransformerRental: TFloatField
+      FieldName = 'TransformerRental'
+    end
+    object PBillOCCode1: TStringField
+      FieldName = 'OCCode1'
+      Size = 10
+    end
+    object PBillOCAmount1: TFloatField
+      FieldName = 'OCAmount1'
+    end
+    object PBillOCMo1: TFloatField
+      FieldName = 'OCMo1'
+    end
+    object PBillOCTotal1: TFloatField
+      FieldName = 'OCTotal1'
+    end
+    object PBillOCCode2: TStringField
+      FieldName = 'OCCode2'
+      Size = 10
+    end
+    object PBillOCAmount2: TFloatField
+      FieldName = 'OCAmount2'
+    end
+    object PBillOCMo2: TFloatField
+      FieldName = 'OCMo2'
+    end
+    object PBillOCTotal2: TFloatField
+      FieldName = 'OCTotal2'
+    end
+    object PBillOCCode3: TStringField
+      FieldName = 'OCCode3'
+      Size = 10
+    end
+    object PBillOCAmount3: TFloatField
+      FieldName = 'OCAmount3'
+    end
+    object PBillOCMo3: TFloatField
+      FieldName = 'OCMo3'
+    end
+    object PBillOCTotal3: TFloatField
+      FieldName = 'OCTotal3'
+    end
+    object PBillTotalBill: TFloatField
+      FieldName = 'TotalBill'
+    end
+    object PBillBillNumber: TStringField
+      FieldName = 'BillNumber'
+      Size = 15
+    end
+    object PBillOEBRNumber: TStringField
+      FieldName = 'OEBRNumber'
+      Size = 10
+    end
+    object PBillBillMonth: TStringField
+      FieldName = 'BillMonth'
+      Size = 4
+    end
+    object PBillBillDate: TDateField
+      FieldName = 'BillDate'
+    end
+    object PBillstatuscode: TStringField
+      FieldName = 'statuscode'
+      FixedChar = True
+      Size = 1
+    end
+    object PBillLCCustMo: TFloatField
+      FieldName = 'LCCustMo'
+    end
+    object PBillPrevYearAdjPowerCost: TFloatField
+      FieldName = 'PrevYearAdjPowerCost'
+    end
+    object PBillSysLossUnderRecov: TFloatField
+      FieldName = 'SysLossUnderRecov'
+    end
+    object PBillVATDisc: TFloatField
+      FieldName = 'VATDisc'
+    end
+    object PBillVATDiscAmt: TFloatField
+      FieldName = 'VATDiscAmt'
+    end
+    object PBillVATDistDiscAmt: TFloatField
+      FieldName = 'VATDistDiscAmt'
+    end
+    object PBillVATGenCoDiscAmt: TFloatField
+      FieldName = 'VATGenCoDiscAmt'
+    end
+    object PBillVATTransCoDiscAmt: TFloatField
+      FieldName = 'VATTransCoDiscAmt'
+    end
+    object PBillVATSystemLossDiscAmt: TFloatField
+      FieldName = 'VATSystemLossDiscAmt'
+    end
+    object PBillVATDist: TFloatField
+      FieldName = 'VATDist'
+    end
+    object PBillVATGenCO: TFloatField
+      FieldName = 'VATGenCO'
+    end
+    object PBillVATTransCO: TFloatField
+      FieldName = 'VATTransCO'
+    end
+    object PBillVATSystemLossGenCO: TFloatField
+      FieldName = 'VATSystemLossGenCO'
+    end
+    object PBillVATSystemLossTransCO: TFloatField
+      FieldName = 'VATSystemLossTransCO'
+    end
+    object PBillVAT: TFloatField
+      FieldName = 'VAT'
+    end
+    object PBillAdjAmountBalance: TFloatField
+      FieldName = 'AdjAmountBalance'
+    end
+    object PBillAdjAmountApplied: TFloatField
+      FieldName = 'AdjAmountApplied'
+    end
+    object PBillReadTime: TStringField
+      FieldName = 'ReadTime'
+      Size = 10
+    end
+    object PBillDiffBillPerKwhr: TFloatField
+      FieldName = 'DiffBillPerKwhr'
+    end
+    object PBillDiffBillPerKW: TFloatField
+      FieldName = 'DiffBillPerKW'
+    end
+    object PBillDiffBillPerCust: TFloatField
+      FieldName = 'DiffBillPerCust'
+    end
+    object PBillMCC: TFloatField
+      FieldName = 'MCC'
+    end
+    object PBillPKVROebrNumber: TStringField
+      FieldName = 'PKVROebrNumber'
+    end
+    object PBillPKVRBillMonth: TStringField
+      FieldName = 'PKVRBillMonth'
+      Size = 4
+    end
+    object PBillPKVRAmount: TFloatField
+      FieldName = 'PKVRAmount'
+    end
+    object PBillTransSysAncRefund: TFloatField
+      FieldName = 'TransSysAncRefund'
+    end
+    object PBillTransDemAncRefund: TFloatField
+      FieldName = 'TransDemAncRefund'
+    end
+    object PBillVATTransAncRefund: TFloatField
+      FieldName = 'VATTransAncRefund'
+    end
+    object PBillSCDisc: TFloatField
+      FieldName = 'SCDisc'
+    end
+    object PBillWRateCode: TStringField
+      FieldName = 'WRateCode'
+      Size = 1
+    end
+    object PBillSCAmt4Disc: TFloatField
+      FieldName = 'SCAmt4Disc'
+    end
+    object PBillCBook: TStringField
+      FieldName = 'CBook'
+      Size = 6
+    end
+    object PBillRPTax: TFloatField
+      FieldName = 'RPTax'
+    end
+    object PBillBTax: TFloatField
+      FieldName = 'BTax'
+    end
+  end
+  object MRate: TMyQuery
+    Connection = BillingData.MyConnection1
+    SQL.Strings = (
+      'select * from meterrate '
+      'where mbillmonth = :billmonth')
+    Left = 40
+    Top = 112
+    ParamData = <
+      item
+        DataType = ftUnknown
+        Name = 'billmonth'
+      end>
+    object MRateMBillMonth: TStringField
+      FieldName = 'MBillMonth'
+      Size = 4
+    end
+    object MRateRateCode: TStringField
+      FieldName = 'RateCode'
+      FixedChar = True
+      Size = 1
+    end
+    object MRateWRateCode: TStringField
+      FieldName = 'WRateCode'
+      Size = 1
+    end
+    object MRateRemarks: TStringField
+      FieldName = 'Remarks'
+      Size = 40
+    end
+    object MRateGenSysRate: TFloatField
+      FieldName = 'GenSysRate'
+    end
+    object MRateHostCommRate: TFloatField
+      FieldName = 'HostCommRate'
+    end
+    object MRateFOREXRate: TFloatField
+      FieldName = 'FOREXRate'
+    end
+    object MRateTCDemandRate: TFloatField
+      FieldName = 'TCDemandRate'
+    end
+    object MRateTCSystemRate: TFloatField
+      FieldName = 'TCSystemRate'
+    end
+    object MRateSystemLossRate: TFloatField
+      FieldName = 'SystemLossRate'
+    end
+    object MRateDCDemandRate: TFloatField
+      FieldName = 'DCDemandRate'
+    end
+    object MRateDCSystemRate: TFloatField
+      FieldName = 'DCSystemRate'
+    end
+    object MRateSCRetailCustRate: TFloatField
+      FieldName = 'SCRetailCustRate'
+    end
+    object MRateSCSupplySysRate: TFloatField
+      FieldName = 'SCSupplySysRate'
+    end
+    object MRateMCRetailCustRate: TFloatField
+      FieldName = 'MCRetailCustRate'
+    end
+    object MRateMCSysRate: TFloatField
+      FieldName = 'MCSysRate'
+    end
+    object MRateUCNPCStrandedDebtsRate: TFloatField
+      FieldName = 'UCNPCStrandedDebtsRate'
+    end
+    object MRateUCNPCStrandedContCostRate: TFloatField
+      FieldName = 'UCNPCStrandedContCostRate'
+    end
+    object MRateUCDUStrandedContCostRate: TFloatField
+      FieldName = 'UCDUStrandedContCostRate'
+    end
+    object MRateUCMERate: TFloatField
+      FieldName = 'UCMERate'
+    end
+    object MRateUCEqTaxesAndRoyaltiesRate: TFloatField
+      FieldName = 'UCEqTaxesAndRoyaltiesRate'
+    end
+    object MRateUCECRate: TFloatField
+      FieldName = 'UCECRate'
+    end
+    object MRateUCCrossSubsidyRemovalRate: TFloatField
+      FieldName = 'UCCrossSubsidyRemovalRate'
+    end
+    object MRateICCrossSubsidyRate: TFloatField
+      FieldName = 'ICCrossSubsidyRate'
+    end
+    object MRatePARARate: TFloatField
+      FieldName = 'PARARate'
+    end
+    object MRateLifelineSubsidyRate: TFloatField
+      FieldName = 'LifelineSubsidyRate'
+    end
+    object MRateLoanCondo: TFloatField
+      FieldName = 'LoanCondo'
+    end
+    object MRateGram: TFloatField
+      FieldName = 'Gram'
+    end
+    object MRateLCcustmo: TFloatField
+      FieldName = 'LCcustmo'
+    end
+    object MRatePrevYearAdjPowerCost: TFloatField
+      FieldName = 'PrevYearAdjPowerCost'
+    end
+    object MRateSysLossUnderRecov: TFloatField
+      FieldName = 'SysLossUnderRecov'
+    end
+    object MRateVAT: TFloatField
+      FieldName = 'VAT'
+    end
+    object MRateVATGenCo: TFloatField
+      FieldName = 'VATGenCo'
+    end
+    object MRateVATTransCo: TFloatField
+      FieldName = 'VATTransCo'
+    end
+    object MRateVATSystemLossGenCO: TFloatField
+      FieldName = 'VATSystemLossGenCO'
+    end
+    object MRateVATSystemLossTransCO: TFloatField
+      FieldName = 'VATSystemLossTransCO'
+    end
+    object MRateVATSystemLoss: TFloatField
+      FieldName = 'VATSystemLoss'
+    end
+    object MRateDiffBillPerKwhr: TFloatField
+      FieldName = 'DiffBillPerKwhr'
+    end
+    object MRateDIffBillPerKW: TFloatField
+      FieldName = 'DIffBillPerKW'
+    end
+    object MRateDiffBillPerCust: TFloatField
+      FieldName = 'DiffBillPerCust'
+    end
+    object MRateMCC: TFloatField
+      FieldName = 'MCC'
+    end
+    object MRateDiffBillMonth: TStringField
+      FieldName = 'DiffBillMonth'
+      Size = 4
+    end
+    object MRateDiffBillApply: TStringField
+      FieldName = 'DiffBillApply'
+      Size = 1
+    end
+    object MRatePantawidApply: TStringField
+      FieldName = 'PantawidApply'
+      Size = 1
+    end
+    object MRateTransSysAncRefundTitle: TStringField
+      FieldName = 'TransSysAncRefundTitle'
+      Size = 30
+    end
+    object MRateTransSysAncRefund: TFloatField
+      FieldName = 'TransSysAncRefund'
+    end
+    object MRateTransDemAncRefundTitle: TStringField
+      FieldName = 'TransDemAncRefundTitle'
+      Size = 30
+    end
+    object MRateTransDemAncRefund: TFloatField
+      FieldName = 'TransDemAncRefund'
+    end
+    object MRateVATTransAncRefundTitle: TStringField
+      FieldName = 'VATTransAncRefundTitle'
+      Size = 30
+    end
+    object MRateVATTransAncRefund: TFloatField
+      FieldName = 'VATTransAncRefund'
+    end
+    object MRateSCDiscApply: TStringField
+      FieldName = 'SCDiscApply'
+      Size = 1
+    end
+    object MRateSCDiscKWHR: TLongWordField
+      FieldName = 'SCDiscKWHR'
+    end
+    object MRateSCDiscPercent: TFloatField
+      FieldName = 'SCDiscPercent'
+    end
+    object MRateSCDiscSubs: TFloatField
+      FieldName = 'SCDiscSubs'
+    end
+    object MRatePantawidRecovApply: TStringField
+      FieldName = 'PantawidRecovApply'
+      Size = 1
+    end
+    object MRateWRSw: TStringField
+      FieldName = 'WRSw'
+      Size = 1
+    end
+  end
+  object CreateAckTor: TMyQuery
+    Connection = BillingData.MyConnection1
+    SQL.Strings = (
+      'CREATE TABLE  `zaneco`.`acktor` ('
+      '  `idacktor` int(10) unsigned NOT NULL auto_increment,'
+      '  `AccountNumber` varchar(10) default NULL,'
+      '  `Name` varchar(50) default NULL,'
+      '  `BillMonth` varchar(4) default NULL,'
+      '  `BillNumber` varchar(15) default NULL,'
+      '  `Amount` double(12,2) default NULL,'
+      '  `AckReceiptNum` varchar(15) default NULL,'
+      '  `ORNumber` varchar(15) default NULL,'
+      '  `Status` varchar(10) default NULL,'
+      '  `DatePrinted` date default NULL,'
+      '  `Cashier` varchar(45) default NULL,'
+      '  PRIMARY KEY  (`idacktor`),'
+      '  UNIQUE KEY `Index_4` USING BTREE (`ORNumber`),'
+      '  KEY `Index_2` (`AccountNumber`),'
+      '  KEY `Index_3` (`AckReceiptNum`),'
+      '  KEY `Index_5` (`Name`),'
+      '  KEY `Index_6` (`DatePrinted`)'
+      ') ENGINE=InnoDB DEFAULT CHARSET=latin1;')
+    Left = 8
+    Top = 152
+  end
+end

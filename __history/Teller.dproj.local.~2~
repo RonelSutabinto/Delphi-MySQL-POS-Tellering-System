@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<ProjectSortOrder AutoSort="0" SortType="0">
+    <File Path="AckrTor.pas"/>
+    <File Path="AckrTor.dfm"/>
+    <File Path="ChartList.pas"/>
+    <File Path="ChartList.dfm"/>
+    <File Path="Data.pas"/>
+    <File Path="Data.dfm"/>
+    <File Path="DCPR.pas"/>
+    <File Path="DCPR.dfm"/>
+    <File Path="depositslip.pas"/>
+    <File Path="depositslip.dfm"/>
+    <File Path="DiscoWarning.pas"/>
+    <File Path="DiscoWarning.dfm"/>
+    <File Path="LedgerInterface.pas"/>
+    <File Path="LedgerInterface.dfm"/>
+    <File Path="Modtools.PAS"/>
+    <File Path="OtherPayments.pas"/>
+    <File Path="OtherPayments.dfm"/>
+    <File Path="setcolor.pas"/>
+    <File Path="SetTeller.pas"/>
+    <File Path="SetTeller.dfm"/>
+    <File Path="TellerMenu.pas"/>
+    <File Path="TellerMenu.dfm"/>
+    <File Path="TellerPOS.pas"/>
+    <File Path="TellerPOS.dfm"/>
+    <File Path="taxWithheldFrm.pas"/>
+    <File Path="taxWithheldFrm.dfm"/>
+  </ProjectSortOrder>
+</BorlandProject>

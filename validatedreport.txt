@@ -1,0 +1,164 @@
+(*
+ // Validated Payments
+
+ PageCount           := 1;
+ LineCount           := 0;
+ HeadSW              := True;
+ GrandTotal          := 0;
+ TotalORS            := 0;
+ TBillPayment        := 0;
+ TBillInterest       := 0;
+
+ Gauge1.Visible      := False;
+ Gauge1.Progress     := 0;
+ Gauge1.MinValue     := 0;
+ Gauge1.MaxValue     := TOR.RecordCount;
+ Application.ProcessMessages;
+
+ Gauge1.Visible      := True;
+
+ TOR.First;
+
+ While not TOR.Eof do
+  begin
+
+  Gauge1.AddProgress(1);
+  Application.ProcessMessages;
+
+  IF TORORStatus.Text = '1' then
+  begin
+      Gauge1.AddProgress(1);
+      Application.ProcessMessages;
+
+       If HeadSW then
+        begin
+         HeadSW := False;
+         TellerReportHeadingValidated;
+        end;
+
+        BillPayment  := 0;
+        BillInterest := 0;
+        AcctNo       := '';
+        PrintBMonth  := '';
+
+        TRDetail.Close;
+        TRDetail.ParamByName('TellerORNumber').Text := TORORNumber.Text;
+        TRDetail.Open;
+
+        TRDetail.First;
+
+        While not TRDetail.Eof do
+         begin
+          If TRDetail.FieldByName('OPDESCRIPTION').Text = 'POWER BILL' then
+            begin
+             BillPayment := TRDetail.FieldByName('TOTAL').AsCurrency;
+             AcctNo      := TRDetail.FieldByName('ACCOUNTNUMBER').Text;
+             PrintBMonth := TRDetailBillMonth.Text;
+            end;
+
+          If TRDetail.FieldByName('OPDESCRIPTION').Text = 'INTEREST' then BillInterest  := TRDetail.FieldByName('TOTAL').AsCurrency;
+          TRDetail.Next;
+         end;
+
+        TBillPayment := TBillPayment + RoundOff(BillPayment);
+        TBillInterest := TBillInterest + RoundOff(BillInterest);
+
+        For I := 1 to 30 do
+        begin
+        If ((TArea[I] = TRDetailArea.Text)) or
+           ((TArea[I] = '0'+TRDetailArea.Text)) then
+            begin
+              TCollectionAmount[I]               := TCollectionAmount[I] +               TRDetailTotal.AsCurrency;
+
+              If CollectSequence.Text <> 'R' then
+              TCollectionTransformerRental[I]    := TCollectionTransformerRental[I] +    TRDetailTransformerRental.AsCurrency else
+              TCollectionLLP[I]                  := TCollectionLLP[I] +                  TRDetailTransformerRental.AsCurrency;
+
+              TCollectionUCNPCSD[I]              := TCollectionUCNPCSD[I] +              TRDetailUCNPCSD.AsCurrency;
+              TCollectionUCNPCSCC[I]             := TCollectionUCNPCSCC[I] +             TRDetailUCNPCSCC.AsCurrency;
+              TCollectionUCDUSCC[I]              := TCollectionUCDUSCC[I] +              TRDetailUCDUSCC.AsCurrency;
+              TCollectionUCME[I]                 := TCollectionUCME[I] +                 TRDetailUCME.AsCurrency;
+              TCollectionUCETR[I]                := TCollectionUCETR[I] +                TRDetailUCETR.AsCurrency;
+              TCollectionUCEC[I]                 := TCollectionUCEC[I] +                 TRDetailUCEC.AsCurrency;
+              TCollectionKwhr[I]                 := TCollectionKwhr[I] +                 TRDetailKilowattHour.AsCurrency;
+
+              TCollectionVAT[I]                  := TCollectionVAT[I] +                  TRDetailVAT.AsCurrency;
+              TCollectionVATDist[I]              := TCollectionVATDist[I] +              TRDetailVATDist.AsCurrency;
+              TCollectionVATGenCO[I]             := TCollectionVATGenCO[I] +             TRDetailVATGenCO.AsCurrency;
+              TCollectionVATTransCO[I]           := TCollectionVATTransCO[I] +           TRDetailVATTransCO.AsCurrency;
+              TCollectionVATSystemLoss[I]        := TCollectionVATSystemLoss[I] +        TRDetailVATSystemLossGenCO.AsCurrency;
+
+              TCollectionVATDiscAmt[I]           := TCollectionVATDiscAmt[I] +           TRDetailVATDiscAmt.AsFloat;
+              TCollectionVATDistDiscAmt[I]       := TCollectionVATDistDiscAmt[I] +       TRDetailVATDistDiscAmt.AsFloat;
+              TCollectionVATGenCODiscAmt[I]      := TCollectionVATGenCODiscAmt[I] +      TRDetailVATGenCoDiscAmt.AsFloat;
+              TCollectionVATTransCODiscAmt[I]    := TCollectionVATTransCODiscAmt[I] +    TRDetailVATTransCoDiscAmt.AsFloat;
+              TCollectionVATSystemLossDiscAmt[I] := TCollectionVATSystemLossDiscAmt[I] + TRDetailVATSystemLossDiscAmt.AsFloat;
+
+              TAmount                          := TAmount + TRDetailTotal.AsCurrency;
+
+              If TRDetailSequence.Text <> 'R' then
+              TTransformerRental    := TTransformerRental + TRDetailTransformerRental.AsCurrency else
+              TLLP                  := TLLP + TRDetailTransformerRental.AsCurrency;
+
+              TUCNPCSD              := TUCNPCSD + TRDetailUCNPCSD.AsCurrency;
+              TUCNPCSCC             := TUCNPCSCC + TRDetailUCNPCSCC.AsCurrency;
+              TUCDUSCC              := TUCDUSCC + TRDetailUCDUSCC.AsCurrency;
+              TUCME                 := TUCME + TRDetailUCME.AsCurrency;
+              TUCETR                := TUCETR + TRDetailUCETR.AsCurrency;
+              TUCEC                 := TUCEC + TRDetailUCEC.AsCurrency;
+              TKwhr                 := TKwhr + TRDetailKilowattHour.AsCurrency;
+              TVAT                  := TVAT + TRDetailVAT.AsCurrency;
+              TVATDist              := TVATDist + TRDetailVATDist.AsCurrency;
+              TVATGenCO             := TVATGenCO + TRDetailVATGenCO.AsCurrency;
+              TVATTransCO           := TVATTransCO + TRDetailVATTransCO.AsCurrency;
+              TVATSystemLoss        := TVATSystemLoss + TRDetailVATSystemLossGenCO.AsCurrency;
+              TVATDiscAmt           := TVATDiscAmt + TRDetailVATDiscAmt.AsFloat;
+              TVATDistDiscAmt       := TVATDistDiscAmt + TRDetailVATDistDiscAmt.AsFloat;
+              TVATGenCODiscAmt      := TVATGenCODiscAmt + TRDetailVATGenCODiscAmt.AsFloat;
+              TVATTransCODiscAmt    := TVATTransCODiscAmt + TRDetailVATTransCODiscAmt.AsFloat;
+              TVATSystemLossDiscAmt := TVATSystemLossDiscAmt + TRDetailVATSystemLossDiscAmt.AsFloat;
+            end;
+        end;
+
+        PageXRent                    := PageXRent + XRent;
+        PageLLP                      := PageLLP + LLP;
+        GrandXRent                   := GrandXRent + XRent;
+        GrandLLP                     := GrandLLP + LLP;
+
+        Writeln(Lst,    JustStr(AcctNo,' ',8,0),
+                    ' ',JustStr(TORORNumber.Text,' ',12,0),
+                    ' ',JustStr(TORName.Text,' ',26,0),
+                    ' ',Format (BillPayment,'##,###,###.##'),
+                        Format (BillInterest,'##,###.##'),
+                        Format (BillPayment+BillInterest,'##,###,###.##'),
+                        PrintBMonth);
+
+        GrandTotal := GrandTotal + (BillPayment + BillInterest);
+        Inc(TotalORS);
+
+        Inc(LineCount);
+        If LineCount = 50 then
+         begin
+          Inc(PageCount);
+          LineCount := 0;
+          Writeln(Lst,'----------------------------------------------------------------------------------------------');
+          Write(Lst,#12);
+          TellerReportHeadingValidated;
+         end;
+
+   end;
+   TOR.Next;
+  end;
+ If GrandTotal > 0 then
+ begin
+   Writeln(Lst,'----------------------------------------------------------------------------------------------');
+   Writeln(Lst,'                                TOTAL  ',TotalORS:5,'     ',
+                Format (TBillPayment,'##,###,###.##'),
+                Format (TBillInterest,'##,###.##'),
+                Format (GrandTotal,'##,###,###.##'));
+   Writeln(Lst,'----------------------------------------------------------------------------------------------');
+ end;
+
+Recap.Close;
+TRDetail.Close;
+*)

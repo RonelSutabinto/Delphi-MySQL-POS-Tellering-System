@@ -1,0 +1,345 @@
+unit SetTeller;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls, Buttons, ComCtrls, DB, DBTables, ExtCtrls, DBAccess,
+  MyAccess, MemDS, PDJSillyLabel, MyDacVcl, DsFancyButton,
+  PJSysInfo, Spin, NxEdit, NxFocus, NxCollection, jpeg;
+
+type
+  TSetForm = class(TForm)
+    MyConnection1: TMyConnection;
+    TellerTrans: TMyQuery;
+    DSUSers: TDataSource;
+    users: TMyQuery;
+    TellerTransTELLERCODE: TStringField;
+    TellerTransORDATE: TDateTimeField;
+    TellerTransTRANSSTAT: TStringField;
+    InsertGrpColl: TMyQuery;
+    CheckTOR: TMyQuery;
+    Label1: TLabel;
+    Label4: TLabel;
+    Label6: TLabel;
+    Label2: TLabel;
+    Bevel1: TBevel;
+    Label3: TLabel;
+    Label5: TLabel;
+    Label7: TLabel;
+    Label8: TLabel;
+    Collector: TNxEdit;
+    Password: TNxEdit;
+    TellerName: TNxEdit;
+    PostDate: TNxDatePicker;
+    StartTellerOR: TNxEdit;
+    InterestRate: TNxEdit;
+    VATRate: TNxEdit;
+    AreaCode: TNxComboBox;
+    FormOpt: TRadioGroup;
+    Image1: TImage;
+    OkBtn: TNxButton;
+    CloseBtn: TNxButton;
+    Image2: TImage;
+    BatchNumber: TLabel;
+    Batch: TNxEdit;
+    CreatePrintedTOR: TMyQuery;
+    CreateCancelledTOR: TMyQuery;
+    CreateTellerLogIn: TMyQuery;
+    Label11: TLabel;
+    Bevel3: TBevel;
+    CreateCustomerCount: TMyQuery;
+    CheckTeller: TMyQuery;
+    InsertTellerLogin: TMyQuery;
+    DeleteTellerLogIn: TMyQuery;
+    usersEntry: TIntegerField;
+    usersCollectorCode: TStringField;
+    usersPassword: TStringField;
+    usersUserType: TStringField;
+    usersPicture: TBlobField;
+    usersName: TStringField;
+    AddColumn: TMyQuery;
+    usersORCount: TLargeintField;
+    SpinEdit1: TNxSpinEdit;
+    NxFocus1: TNxFocus;
+    PrintOpt: TRadioGroup;
+    Label9: TLabel;
+    procedure CloseBtnClick(Sender: TObject);
+    procedure OkBtnClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure CollectorKeyPress(Sender: TObject; var Key: Char);
+    procedure TellerNameKeyPress(Sender: TObject; var Key: Char);
+    procedure PasswordKeyPress(Sender: TObject; var Key: Char);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure StartTellerORKeyPress(Sender: TObject; var Key: Char);
+    procedure InterestRateKeyPress(Sender: TObject; var Key: Char);
+    procedure VATRateKeyPress(Sender: TObject; var Key: Char);
+    procedure AreaCodeKeyPress(Sender: TObject; var Key: Char);
+    procedure AreaCodeExit(Sender: TObject);
+    procedure BatchKeyPress(Sender: TObject; var Key: Char);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+    AreaCodeStr  : String[3] ;
+    AllowPartial : Boolean   ;
+  end;
+
+var
+  SetForm: TSetForm;
+
+implementation
+
+uses TellerMenu, ModTools, Data;
+
+{$R *.dfm}
+
+procedure TSetForm.CloseBtnClick(Sender: TObject);
+begin
+  Close;
+end;
+
+procedure TSetForm.OkBtnClick(Sender: TObject);
+begin
+  If FormOpt.ItemIndex = -1 then
+  begin
+   MessageDlg('Select a valid form.....', mtError, [mbOK], 0);
+   abort;
+  end;
+
+  CheckTeller.ParamByName('tellernumber').Text := SpinEdit1.Text;
+  CheckTeller.Open;
+  If not CheckTeller.IsEmpty then
+   begin
+     MessageDlg('That Teller Number is already in use...'+#13+#10+'Please select another teller number', mtError, [mbOK], 0);
+     SpinEdit1.SetFocus;
+     CheckTeller.Close;
+     exit;
+   end;
+
+  CheckTeller.Close;
+
+  Try
+  CreatePrintedTOR.Execute;
+  CreateCancelledTOR.Execute;
+  CreateTellerLogIn.Execute;
+  CreateCustomerCount.Execute;
+  except
+  end;
+
+  CheckTOR.Close;
+  CheckTOR.FilterSQL := 'ORNumber = '+QuotedStr(JustStr(StartTellerOR.Text,'0',7,1)+Collector.Text);
+  CheckTOR.Open;
+
+  If not CheckTOR.IsEmpty then
+   begin
+    MessageDlg('That OR number has already been used. Please check.', mtInformation, [mbOK], 0);
+    StartTellerOR.SetFocus;
+    CheckTOR.Close;
+    exit;
+   end;
+
+  CheckTOR.Close;
+
+  TellerTrans.Close;
+  TellerTrans.ParamByName('date').AsDate     := PostDate.Date;
+  TellerTrans.ParamByName('tellercode').Text := Collector.Text;
+  TellerTrans.ParamByName('batch').Text      := Batch.Text;
+  TellerTrans.Open;
+
+  If not TellerTrans.IsEmpty then
+   begin
+    MessageDlg('That transaction batch is already close....', mtError, [mbOK], 0);
+    Collector.SetFocus;
+    TellerTrans.Close;
+    exit;
+   end;
+
+  TellerTrans.Close;
+
+  users.Close;
+  users.SQL.Clear;
+  users.SQL.Add('select * from collector ');
+  users.SQL.Add('    where collectorcode = :collectorcode and ');
+  users.SQL.Add('          password = :password');
+  Users.ParamByName('collectorcode').Text := Collector.Text;
+  Users.ParamByName('password').Text      := Password.Text;
+  Users.Open;
+
+  If Users.IsEmpty then
+   begin
+     ShowMessage('Invalid User and Password!!');
+     Collector.SetFocus;
+     users.Close;
+     exit;
+   end;
+
+  InsertTellerLogin.ParamByName('tellernumber').Text := SpinEdit1.Text;
+  InsertTellerLogin.ParamByName('tellername').Text   := usersName.Text;
+  InsertTellerLogIn.Execute;
+
+     Case AreaCode.ItemIndex of
+     0 : AreaCodeStr := '001';
+     1 : AreaCodeStr := '002';
+     2 : AreaCodeStr := '003';
+     3 : AreaCodeStr := '004';
+     end;
+
+     If not assigned(MenuForm) then MenuForm := TMenuForm.Create(Application);
+
+     Hide;
+     If usersUserType.Text = '5' then
+      begin
+       MenuForm.CDCR.Visible            := True;
+       MenuForm.DCPR.Visible            := True;
+       MenuForm.Summary.Visible         := True;
+       MenuForm.OtherPayment.Visible    := True;
+       MenuForm.ReceiptPrinting.Visible := True;
+       MenuForm.DepositBtn.Visible      := True;
+      end;
+
+     MenuForm.Show;
+
+end;
+
+procedure TSetForm.FormShow(Sender: TObject);
+begin
+ PostDate.Date := Now;
+ Collector.SetFocus;
+end;
+
+procedure TSetForm.CollectorKeyPress(Sender: TObject; var Key: Char);
+begin
+  If Key = #13 then
+  begin
+
+   try
+    AddColumn.Execute; // add ORCount column to collector table
+   except
+   end;
+
+   users.Close;
+   users.SQL.Clear;
+   users.SQL.Add('select * from collector where collectorcode = :collectorcode');
+   users.ParamByName('collectorcode').Text := Collector.Text;
+   users.Open;
+
+   If not users.IsEmpty then
+    begin
+      If (usersUserType.Text <> '2') and
+         (usersUserType.Text <> '5') and
+         (usersUserType.Text <> '8') then
+        begin
+         MessageDlg('You are not authorized to access this program.....', mtWarning, [mbOK], 0);
+         Collector.SetFocus;
+         exit;
+        end;
+
+      If (usersUserType.Text = '5') or (usersUserType.Text = '2') then AllowPartial := True else AllowPartial := False;
+      If (usersUserType.Text = '5') then PostDate.Enabled  := True;
+
+     StartTellerOR.Text := IntToStr(usersORCount.AsInteger);
+     TellerName.Text    := usersName.Text;
+     PassWord.SetFocus;
+     exit;
+    end
+    else
+    begin
+    MessageDlg('User not found.', mtError, [mbOK], 0);
+    Collector.SetFocus;
+    end;
+  end;
+end;
+
+procedure TSetForm.TellerNameKeyPress(Sender: TObject; var Key: Char);
+begin
+  If Key = #13 then PassWord.SetFocus;
+end;
+
+procedure TSetForm.PasswordKeyPress(Sender: TObject; var Key: Char);
+begin
+  If Key = #13 then StartTellerOR.SetFocus;
+end;
+
+procedure TSetForm.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  DeleteTellerLogIn.ParamByName('tellernumber').Text := SpinEdit1.Text;
+  DeleteTellerLogIn.Execute;
+  users.Close;
+  Action  := caFree;
+  SetForm := Nil;
+end;
+
+procedure TSetForm.StartTellerORKeyPress(Sender: TObject; var Key: Char);
+begin
+
+  If key = #13 then
+   begin
+    If StartTellerOR.Text = '' then
+     begin
+      MessageDlg('Please enter a valid number...', mtError, [mbOK], 0);
+      StartTellerOR.SetFocus;
+     end;
+    CheckTOR.Close;
+    CheckTOR.FilterSQL := 'ORNumber = '+QuotedStr(JustStr(StartTellerOR.Text,'0',7,1)+Collector.Text);
+    CheckTOR.Open;
+    If not CheckTOR.IsEmpty then
+     begin
+      MessageDlg('That OR number has alrready been used. Please check.', mtInformation, [mbOK], 0);
+      StartTellerOR.SetFocus;
+      CheckTOR.Close;
+      exit;
+     end;
+    CheckTOR.Close;
+    Batch.SetFocus; 
+   end;
+end;
+
+procedure TSetForm.InterestRateKeyPress(Sender: TObject; var Key: Char);
+begin
+  If key = #13 then VatRate.SetFocus;
+end;
+
+
+procedure TSetForm.VATRateKeyPress(Sender: TObject; var Key: Char);
+begin
+  If Key = #13 then OkBtnClick(Self);
+end;
+
+procedure TSetForm.AreaCodeKeyPress(Sender: TObject; var Key: Char);
+begin
+  If Key = #13 then
+  begin
+    If AreaCode.ItemIndex < 0 then
+      begin
+        MessageDlg('Area Invalid.... ', mtError, [mbOK], 0);
+        AreaCode.SetFocus;
+        exit;
+      end;
+
+    // If AreaCode.ItemIndex > 0 then PostDate.Enabled := True else PostDate.Enabled := False;
+
+    Collector.SetFocus;
+
+  end;
+end;
+
+procedure TSetForm.AreaCodeExit(Sender: TObject);
+begin
+    If AreaCode.ItemIndex < 0 then
+      begin
+        MessageDlg('Area Invalid.... ', mtError, [mbOK], 0);
+        AreaCode.SetFocus;
+        exit;
+      end;
+
+    // If AreaCode.ItemIndex > 0 then PostDate.Enabled := True else PostDate.Enabled := False;
+end;
+
+procedure TSetForm.BatchKeyPress(Sender: TObject; var Key: Char);
+begin
+  If key = #13 then InterestRate.SetFocus;
+end;
+
+end.
+

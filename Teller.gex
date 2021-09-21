@@ -1,0 +1,13 @@
+[General]
+Name=Teller
+Project=1
+[Classes]
+Count=8
+Class0="TSetForm","TForm","SetTeller","0","D:\applications\zaneco\Real Time Teller Interface\SetTeller.pas"
+Class1="TMenuForm","TForm","TellerMenu","0","D:\applications\zaneco\Real Time Teller Interface\TellerMenu.pas"
+Class2="TOtherPaymentsForm","TForm","OtherPayments","0","D:\applications\zaneco\Real Time Teller Interface\OtherPayments.pas"
+Class3="TLedgerInterfaceForm","TForm","LedgerInterface","0","D:\applications\zaneco\Real Time Teller Interface\LedgerInterface.pas"
+Class4="TTellerPOSForm","TForm","TellerPOS","0","D:\applications\zaneco\Real Time Teller Interface\TellerPOS.pas"
+Class5="TBillingData","TDataModule","Data","0","D:\applications\zaneco\source code\Data.pas"
+Class6="TBillingStatusUpdateForm","TForm","StatusUpdate","0","D:\applications\zaneco\Real Time Teller Interface\StatusUpdate.pas"
+Class7="TSetColorForm","TForm","setcolor","0","D:\applications\zaneco\Real Time Teller Interface\setcolor.pas"

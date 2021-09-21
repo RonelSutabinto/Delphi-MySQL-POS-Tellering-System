@@ -1,0 +1,478 @@
+object DepositSlipForm: TDepositSlipForm
+  Left = 463
+  Top = 101
+  Width = 618
+  Height = 418
+  Caption = 'Deposit Slip'
+  Color = clWindow
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'MS Sans Serif'
+  Font.Style = []
+  OldCreateOrder = False
+  Position = poScreenCenter
+  OnClose = FormClose
+  OnShow = FormShow
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Label13: TLabel
+    Left = 10
+    Top = 14
+    Width = 70
+    Height = 13
+    Caption = 'Date Selection'
+  end
+  object NxButton1: TNxButton
+    Left = 8
+    Top = 200
+    Width = 129
+    Caption = 'New'
+    TabOrder = 0
+    OnClick = NxButton1Click
+  end
+  object NxButton2: TNxButton
+    Left = 8
+    Top = 223
+    Width = 129
+    Height = 25
+    Caption = 'Edit '
+    TabOrder = 1
+    OnClick = NxButton2Click
+  end
+  object NxButton3: TNxButton
+    Left = 8
+    Top = 248
+    Width = 129
+    Caption = 'Delete'
+    TabOrder = 2
+    OnClick = NxButton3Click
+  end
+  object NxButton4: TNxButton
+    Left = 8
+    Top = 350
+    Width = 129
+    Caption = 'Close'
+    TabOrder = 3
+    OnClick = NxButton4Click
+  end
+  object CRDBGrid1: TCRDBGrid
+    Left = 144
+    Top = 8
+    Width = 449
+    Height = 361
+    OptionsEx = [dgeEnableSort, dgeLocalFilter, dgeLocalSorting, dgeSummary]
+    Ctl3D = False
+    DataSource = dsDeposit
+    Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit]
+    ParentCtl3D = False
+    ReadOnly = True
+    TabOrder = 4
+    TitleFont.Charset = DEFAULT_CHARSET
+    TitleFont.Color = clWindowText
+    TitleFont.Height = -11
+    TitleFont.Name = 'MS Sans Serif'
+    TitleFont.Style = []
+    Columns = <
+      item
+        Expanded = False
+        FieldName = 'depositdate'
+        Title.Caption = 'Dep. Date'
+        Width = 57
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'CDCRDate'
+        Title.Caption = 'DCPR Date'
+        Width = 61
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'AccountCode'
+        Title.Alignment = taCenter
+        Title.Caption = 'Account Code'
+        Width = 71
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'AccountDescription'
+        Title.Alignment = taCenter
+        Title.Caption = 'Account Description'
+        Width = 103
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'Amount'
+        Title.Alignment = taRightJustify
+        Width = 113
+        Visible = True
+        SummaryMode = smSum
+        FloatFormat = ffCurrency
+        FloatPrecision = 12
+        FloatDigits = 2
+      end>
+  end
+  object DateFrom: TNxDatePicker
+    Left = 9
+    Top = 32
+    Width = 127
+    Height = 21
+    TabOrder = 6
+    Text = '08/16/2010'
+    HideFocus = False
+    Date = 40406.000000000000000000
+    NoneCaption = 'None'
+    TodayCaption = 'Today'
+  end
+  object DateTo: TNxDatePicker
+    Left = 9
+    Top = 57
+    Width = 127
+    Height = 21
+    TabOrder = 7
+    Text = '08/16/2010'
+    HideFocus = False
+    Date = 40406.000000000000000000
+    NoneCaption = 'None'
+    TodayCaption = 'Today'
+  end
+  object NxButton8: TNxButton
+    Left = 8
+    Top = 144
+    Width = 129
+    Caption = 'Select'
+    TabOrder = 8
+    OnClick = NxButton8Click
+  end
+  object RadioGroup1: TRadioGroup
+    Left = 9
+    Top = 80
+    Width = 127
+    Height = 57
+    Caption = 'Search Option'
+    ItemIndex = 0
+    Items.Strings = (
+      'Deposit Date'
+      'DCPR Date')
+    TabOrder = 9
+    OnClick = RadioGroup1Click
+  end
+  object NxHeaderPanel1: TNxHeaderPanel
+    Left = 148
+    Top = 50
+    Width = 354
+    Height = 280
+    Caption = 'Deposit Slip Panel'
+    HeaderFont.Charset = DEFAULT_CHARSET
+    HeaderFont.Color = clWindowText
+    HeaderFont.Height = -11
+    HeaderFont.Name = 'MS Sans Serif'
+    HeaderFont.Style = []
+    TabOrder = 5
+    Visible = False
+    DesignSize = (
+      352
+      278)
+    FullWidth = 354
+    object Label1: TLabel
+      Left = 98
+      Top = 47
+      Width = 23
+      Height = 13
+      Caption = 'Date'
+      FocusControl = DBEdit1
+    end
+    object Label2: TLabel
+      Left = 68
+      Top = 70
+      Width = 53
+      Height = 13
+      Caption = 'Description'
+      FocusControl = DBEdit2
+    end
+    object Label4: TLabel
+      Left = 25
+      Top = 118
+      Width = 96
+      Height = 13
+      Caption = 'Account Description'
+      FocusControl = DBEdit4
+    end
+    object Label12: TLabel
+      Left = 85
+      Top = 142
+      Width = 36
+      Height = 13
+      Caption = 'Amount'
+      FocusControl = DBEdit12
+    end
+    object Label3: TLabel
+      Left = 64
+      Top = 167
+      Width = 56
+      Height = 13
+      Caption = 'DCPR Date'
+      FocusControl = DBEdit5
+    end
+    object DBEdit1: TDBEdit
+      Left = 127
+      Top = 43
+      Width = 200
+      Height = 21
+      BevelKind = bkTile
+      BorderStyle = bsNone
+      DataField = 'depositdate'
+      DataSource = dsDeposit
+      TabOrder = 0
+      OnKeyPress = DBEdit1KeyPress
+    end
+    object DBEdit2: TDBEdit
+      Left = 127
+      Top = 67
+      Width = 200
+      Height = 21
+      BevelKind = bkTile
+      BorderStyle = bsNone
+      DataField = 'Description'
+      DataSource = dsDeposit
+      TabOrder = 1
+      OnKeyPress = DBEdit1KeyPress
+    end
+    object DBEdit3: TDBEdit
+      Left = 127
+      Top = 91
+      Width = 200
+      Height = 21
+      BevelKind = bkTile
+      BorderStyle = bsNone
+      DataField = 'AccountCode'
+      DataSource = dsDeposit
+      TabOrder = 2
+      OnKeyPress = DBEdit1KeyPress
+    end
+    object DBEdit4: TDBEdit
+      Left = 127
+      Top = 115
+      Width = 200
+      Height = 21
+      BevelKind = bkTile
+      BorderStyle = bsNone
+      DataField = 'AccountDescription'
+      DataSource = dsDeposit
+      TabOrder = 3
+      OnKeyPress = DBEdit1KeyPress
+    end
+    object DBEdit12: TDBEdit
+      Left = 127
+      Top = 139
+      Width = 200
+      Height = 21
+      BevelKind = bkTile
+      BorderStyle = bsNone
+      DataField = 'Amount'
+      DataSource = dsDeposit
+      TabOrder = 4
+      OnKeyPress = DBEdit12KeyPress
+    end
+    object NxLinkLabel1: TNxLinkLabel
+      Left = 278
+      Top = 6
+      Width = 25
+      Height = 15
+      Anchors = [akTop, akRight]
+      Caption = 'Save'
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clBlue
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      HoverColor = clRed
+      ParentFont = False
+      TextDistance = 2
+      Transparent = True
+      VertSpacing = 2
+      OnClick = NxLinkLabel1Click
+    end
+    object NxLinkLabel2: TNxLinkLabel
+      Left = 311
+      Top = 6
+      Width = 33
+      Height = 15
+      Anchors = [akTop, akRight]
+      Caption = 'Cancel'
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clBlue
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      HoverColor = clRed
+      ParentFont = False
+      TextDistance = 2
+      Transparent = True
+      VertSpacing = 2
+      OnClick = NxLinkLabel2Click
+    end
+    object NxLinkLabel3: TNxLinkLabel
+      Left = 52
+      Top = 94
+      Width = 69
+      Height = 15
+      Caption = 'Account Code'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlue
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      HoverColor = clRed
+      ParentFont = False
+      TextDistance = 2
+      VertSpacing = 2
+      OnClick = NxLinkLabel3Click
+    end
+    object DBEdit5: TDBEdit
+      Left = 127
+      Top = 163
+      Width = 200
+      Height = 21
+      BevelKind = bkTile
+      BorderStyle = bsNone
+      DataField = 'CDCRDate'
+      DataSource = dsDeposit
+      TabOrder = 5
+      OnKeyPress = DBEdit1KeyPress
+    end
+    object DBRadioGroup1: TDBRadioGroup
+      Left = 48
+      Top = 197
+      Width = 257
+      Height = 63
+      Caption = 'Deposit Classification'
+      Columns = 2
+      DataField = 'BankRemit'
+      DataSource = dsDeposit
+      Items.Strings = (
+        'Collection Deposit'
+        'Bank Remittance'
+        'Returned Checks'
+        'Partial Deposit')
+      TabOrder = 9
+      Values.Strings = (
+        '0'
+        '1'
+        '2')
+    end
+  end
+  object Deposit: TMyQuery
+    Connection = BillingData.MyConnection1
+    SQL.Strings = (
+      'select * from deposit'
+      '&depositdate'
+      '&dcprdate'
+      'order by depositdate')
+    OnCalcFields = DepositCalcFields
+    Left = 8
+    Top = 288
+    MacroData = <
+      item
+        Name = 'depositdate'
+        Value = 'where depositdate between :datefrom and :dateto'#13#10
+        Active = False
+      end
+      item
+        Name = 'dcprdate'
+        Value = 'where cdcrdate between :datefrom and :dateto'
+        Active = False
+      end>
+    object Depositiddeposit: TLargeintField
+      FieldName = 'iddeposit'
+    end
+    object DepositCDCRDate: TDateField
+      FieldName = 'CDCRDate'
+      EditMask = '!99/99/0000;1;_'
+    end
+    object Depositdepositdate: TDateField
+      FieldName = 'depositdate'
+      EditMask = '!99/99/0000;1;_'
+    end
+    object DepositDescription: TStringField
+      FieldName = 'Description'
+      Size = 50
+    end
+    object DepositAccountCode: TStringField
+      FieldName = 'AccountCode'
+      Size = 15
+    end
+    object DepositAccountDescription: TStringField
+      FieldName = 'AccountDescription'
+      Size = 50
+    end
+    object DepositD1000: TLargeintField
+      FieldName = 'D1000'
+    end
+    object DepositD500: TLargeintField
+      FieldName = 'D500'
+    end
+    object DepositD200: TLargeintField
+      FieldName = 'D200'
+    end
+    object DepositD100: TLargeintField
+      FieldName = 'D100'
+    end
+    object DepositD50: TLargeintField
+      FieldName = 'D50'
+    end
+    object DepositD20: TLargeintField
+      FieldName = 'D20'
+    end
+    object Depositcoins: TFloatField
+      FieldName = 'coins'
+    end
+    object DepositAmount: TFloatField
+      FieldName = 'Amount'
+      currency = True
+    end
+    object DepositAmt1000: TCurrencyField
+      FieldKind = fkCalculated
+      FieldName = 'Amt1000'
+      Calculated = True
+    end
+    object DepositAmt500: TCurrencyField
+      FieldKind = fkCalculated
+      FieldName = 'Amt500'
+      Calculated = True
+    end
+    object DepositAmt200: TCurrencyField
+      FieldKind = fkCalculated
+      FieldName = 'Amt200'
+      Calculated = True
+    end
+    object DepositAmt100: TCurrencyField
+      FieldKind = fkCalculated
+      FieldName = 'Amt100'
+      Calculated = True
+    end
+    object DepositAmt50: TCurrencyField
+      FieldKind = fkCalculated
+      FieldName = 'Amt50'
+      Calculated = True
+    end
+    object DepositAmt20: TCurrencyField
+      FieldKind = fkCalculated
+      FieldName = 'Amt20'
+      Calculated = True
+    end
+    object DepositBankRemit: TStringField
+      FieldName = 'BankRemit'
+      Size = 1
+    end
+  end
+  object dsDeposit: TMyDataSource
+    DataSet = Deposit
+    Left = 8
+    Top = 320
+  end
+end

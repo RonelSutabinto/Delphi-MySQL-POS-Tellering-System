@@ -1,0 +1,524 @@
+unit taxWithheldFrm;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, NxCollection, Vcl.Grids,
+  Vcl.DBGrids, Vcl.StdCtrls, Vcl.Mask, Vcl.DBCtrls, Data.DB, MemDS, DBAccess,
+  MyAccess, NxEdit, Vcl.Menus;
+
+type
+  TtaxWithheldForm = class(TForm)
+    Label1: TLabel;
+    Label37: TLabel;
+    Label45: TLabel;
+    DBGrid1: TDBGrid;
+    NxButton23: TNxButton;
+    NxButton24: TNxButton;
+    Bevel1: TBevel;
+    taxWheldS: TMyDataSource;
+    taxWheldQ: TMyQuery;
+    taxS: TMyDataSource;
+    taxQ: TMyQuery;
+    taxQTaxBase: TFloatField;
+    taxQTaxRate: TFloatField;
+    taxQAmount: TFloatField;
+    taxQoccode: TStringField;
+    taxQvat: TFloatField;
+    taxQCodepost: TStringField;
+    taxQDescription: TStringField;
+    mrateQ: TMyQuery;
+    mrateQEntry: TIntegerField;
+    mrateQMBillMonth: TStringField;
+    mrateQRateCode: TStringField;
+    mrateQWRateCode: TStringField;
+    mrateQRemarks: TStringField;
+    mrateQGenSysRate: TFloatField;
+    mrateQHostCommRate: TFloatField;
+    mrateQFOREXRate: TFloatField;
+    mrateQTCDemandRate: TFloatField;
+    mrateQTCSystemRate: TFloatField;
+    mrateQSystemLossRate: TFloatField;
+    mrateQDCDemandRate: TFloatField;
+    mrateQDCSystemRate: TFloatField;
+    mrateQSCRetailCustRate: TFloatField;
+    mrateQSCSupplySysRate: TFloatField;
+    mrateQMCRetailCustRate: TFloatField;
+    mrateQMCSysRate: TFloatField;
+    mrateQUCNPCStrandedDebtsRate: TFloatField;
+    mrateQUCNPCStrandedContCostRate: TFloatField;
+    mrateQUCDUStrandedContCostRate: TFloatField;
+    mrateQUCMERate: TFloatField;
+    mrateQUCEqTaxesAndRoyaltiesRate: TFloatField;
+    mrateQUCECRate: TFloatField;
+    mrateQUCCrossSubsidyRemovalRate: TFloatField;
+    mrateQICCrossSubsidyRate: TFloatField;
+    mrateQPARARate: TFloatField;
+    mrateQLifelineSubsidyRate: TFloatField;
+    mrateQLoanCondo: TFloatField;
+    mrateQGram: TFloatField;
+    mrateQLCcustmo: TFloatField;
+    mrateQPrevYearAdjPowerCost: TFloatField;
+    mrateQSysLossUnderRecov: TFloatField;
+    mrateQVAT: TFloatField;
+    mrateQVATGenCo: TFloatField;
+    mrateQVATTransCo: TFloatField;
+    mrateQVATSystemLossGenCO: TFloatField;
+    mrateQVATSystemLossTransCO: TFloatField;
+    mrateQVATSystemLoss: TFloatField;
+    mrateQDiffBillPerKwhr: TFloatField;
+    mrateQDIffBillPerKW: TFloatField;
+    mrateQDiffBillPerCust: TFloatField;
+    mrateQMCC: TFloatField;
+    mrateQDiffBillMonth: TStringField;
+    mrateQDiffBillApply: TStringField;
+    mrateQPantawidApply: TStringField;
+    mrateQTransSysAncRefundTitle: TStringField;
+    mrateQTransSysAncRefund: TFloatField;
+    mrateQTransDemAncRefundTitle: TStringField;
+    mrateQTransDemAncRefund: TFloatField;
+    mrateQVATTransAncRefundTitle: TStringField;
+    mrateQVATTransAncRefund: TFloatField;
+    mrateQSCDiscApply: TStringField;
+    mrateQSCDiscKWHR: TLongWordField;
+    mrateQSCDiscPercent: TFloatField;
+    mrateQSCDiscSubs: TFloatField;
+    mrateQPantawidRecovApply: TStringField;
+    mrateQWRSw: TStringField;
+    mrateQRateOrderNo: TIntegerField;
+    mrateQOtherGenRateAdj: TFloatField;
+    mrateQOtherTransCostAdj: TFloatField;
+    mrateQOtherTransDemandCostAdj: TFloatField;
+    mrateQOtherSystemLossCostAdj: TFloatField;
+    mrateQOtherLifelineRateCostAdj: TFloatField;
+    mrateQOtherSeniorCitizenRateAdj: TFloatField;
+    mrateQFitallrate: TFloatField;
+    mrateQPARec: TFloatField;
+    mrateQCreditableTaxWithheld: TFloatField;
+    mrateQfinalVat: TFloatField;
+    cancelWheldTax: TMyQuery;
+    name_tf: TEdit;
+    ComputeVat: TMyQuery;
+    ComputeVatamount: TFloatField;
+    ComputeVatOC1: TFloatField;
+    ComputeVatOC2: TFloatField;
+    ComputeVatOC3: TFloatField;
+    taxWheldQEntry: TIntegerField;
+    taxWheldQReceiptNumber: TStringField;
+    taxWheldQAccountCode: TFloatField;
+    taxWheldQArea: TStringField;
+    taxWheldQBook: TStringField;
+    taxWheldQSequence: TStringField;
+    taxWheldQAccountNumber: TStringField;
+    taxWheldQName: TStringField;
+    taxWheldQAddress: TStringField;
+    taxWheldQBillMonth: TStringField;
+    taxWheldQKilowattHour: TFloatField;
+    taxWheldQTotalBill: TFloatField;
+    taxWheldQCollectorCode: TStringField;
+    taxWheldQDatePaid: TDateField;
+    taxWheldQOPDescription: TStringField;
+    taxWheldQTellerORNumber: TStringField;
+    taxWheldQOCCode1: TStringField;
+    taxWheldQOCCode2: TStringField;
+    taxWheldQOCCode3: TStringField;
+    taxWheldQTaxBaseAmnt: TFloatField;
+    taxWheldQFinalTaxRate: TFloatField;
+    taxWheldQFinalTaxWithheld: TFloatField;
+    taxWheldQCreditableTaxRate: TFloatField;
+    taxWheldQCreditableTaxWithheld: TFloatField;
+    taxWheldQtinFinal: TStringField;
+    taxWheldQPayorsNameFinal: TStringField;
+    taxWheldQtinCreditable: TStringField;
+    taxWheldQPayorsNameCreditable: TStringField;
+    taxWheldQOCAmount1: TFloatField;
+    taxWheldQOC1FinalVat: TFloatField;
+    taxWheldQOC1WithholdingTax: TFloatField;
+    taxWheldQOCAmount2: TFloatField;
+    taxWheldQOC2FinalVat: TFloatField;
+    taxWheldQOC2WithholdingTax: TFloatField;
+    taxWheldQOCAmount3: TFloatField;
+    taxWheldQOC3FinalVat: TFloatField;
+    taxWheldQOC3WithholdingTax: TFloatField;
+    tin_tf: TMaskEdit;
+    updateTaxWheld: TMyQuery;
+    taxWithheldRec: TMyQuery;
+    updateRec: TMyQuery;
+    taxWithheldRecidtaxwitheld: TIntegerField;
+    taxWithheldRecaccountcode: TFloatField;
+    taxWithheldRectinFinal: TStringField;
+    taxWithheldRectinWithheld: TStringField;
+    taxWithheldRecagent: TStringField;
+    mrateQrentalTaxWithheld: TFloatField;
+    Label2: TLabel;
+    txtvatchange: TNxNumberEdit;
+    PopupMenu1: TPopupMenu;
+    EditVatComputation1: TMenuItem;
+    NxHeaderPanel1: TNxHeaderPanel;
+    txtpass: TNxEdit;
+    Label3: TLabel;
+    NxButton1: TNxButton;
+    NxButton2: TNxButton;
+    CancelVatEdit1: TMenuItem;
+    procedure NxButton23Click(Sender: TObject);
+    procedure NxButton24Click(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure tin_tfKeyPress(Sender: TObject; var Key: Char);
+    procedure name_tfKeyPress(Sender: TObject; var Key: Char);
+    procedure NxButton2Click(Sender: TObject);
+    procedure EditVatComputation1Click(Sender: TObject);
+    procedure NxButton1Click(Sender: TObject);
+    procedure CancelVatEdit1Click(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+
+  end;
+
+var
+  taxWithheldForm: TtaxWithheldForm;
+
+implementation
+
+{$R *.dfm}
+
+uses Data, TellerPOS;
+
+procedure TtaxWithheldForm.CancelVatEdit1Click(Sender: TObject);
+begin
+  Label2.Visible := false;
+  txtvatchange.Visible := false;
+end;
+
+procedure TtaxWithheldForm.EditVatComputation1Click(Sender: TObject);
+begin
+
+  NxHeaderPanel1.Visible := true;
+  txtpass.Text :='';
+  txtpass.SetFocus;
+end;
+
+procedure TtaxWithheldForm.FormShow(Sender: TObject);
+begin
+  with TellerPOSForm do
+  begin
+    mrateQ.Close;
+    mrateQ.ParamByName('billmonth').Text := bMonth;
+    mrateQ.ParamByName('wratecode').Text := bh_wratecode;
+    mrateQ.Open;
+
+    taxWheldQ.Close;
+    taxWheldQ.FilterSQL := ' accountcode like '+quotedstr(codeNum) +
+                           ' and billmonth like ' + quotedstr(bMonth);
+    taxWheldQ.Open;
+
+    taxWithheldRec.Close;
+    taxWithheldRec.FilterSQL := 'accountcode = '+quotedstr(codeNum);
+    taxWithheldRec.Open;
+
+    if taxWithheldRec.IsEmpty then
+    name_tf.Text := Name.Text
+    else
+    name_tf.Text := taxWithheldRecagent.Text;
+
+
+
+    if taxWithheldForm.Label1.Caption = 'FINAL VAT' then
+    begin
+      taxQ.Close;
+      taxQ.MacroByName('Creditable').Active     := false;
+      taxQ.MacroByName('Final').Active          := true;
+      taxQ.ParamByName('taxbase').AsFloat       := TaxWithheldBase;
+      taxQ.ParamByName('TaxRate').AsFloat       := mrateQfinalVat.AsFloat;
+      taxQ.ParamByName('OCCode1').Text          := OCCode1;
+      taxQ.ParamByName('OCCode2').Text          := OCCode2;
+      taxQ.ParamByName('OCCode3').Text          := OCCode3;
+      taxQ.ParamByName('OCamount1').AsFloat     := OCAmount1;
+      taxQ.ParamByName('OCamount2').AsFloat     := OCAmount2;
+      taxQ.ParamByName('OCamount3').AsFloat     := OCAmount3;
+      taxQ.ParamByName('vat').AsFloat           := mrateQVAT.AsFloat;
+      taxQ.Open;
+
+      ComputeVat.Close;
+      ComputeVat.MacroByName('Creditable').Active     := false;
+      ComputeVat.MacroByName('Final').Active          := true;
+      ComputeVat.ParamByName('TaxRate').AsFloat       := mrateQfinalVat.AsFloat;
+
+      if not taxWheldQ.IsEmpty and (taxWheldQFinalTaxWithheld.AsFloat<>0) then
+      begin
+        tin_tf.Text  := taxWheldQtinFinal.Text;
+        name_tf.Text := taxWheldQPayorsNameFinal.Text;
+      end
+      else
+      begin
+        tin_tf.Text  := taxWithheldRectinFinal.Text;
+      end;
+    end;
+
+    if taxWithheldForm.Label1.Caption = 'WITHHOLDING TAX' then
+    begin
+      taxQ.Close;
+      taxQ.MacroByName('Creditable').Active     := true;
+      taxQ.MacroByName('Final').Active          := false;
+      taxQ.ParamByName('taxbase').AsFloat       := TaxWithheldBase;
+      taxQ.ParamByName('TaxRate').AsFloat       := mrateQCreditableTaxWithheld.AsFloat;
+      taxQ.ParamByName('rentalTaxRate').AsFloat := mrateQrentalTaxWithheld.AsFloat;
+      taxQ.ParamByName('OCCode1').Text          := OCCode1;
+      taxQ.ParamByName('OCCode2').Text          := OCCode2;
+      taxQ.ParamByName('OCCode3').Text          := OCCode3;
+      taxQ.ParamByName('OCamount1').AsFloat     := OCAmount1;
+      taxQ.ParamByName('OCamount2').AsFloat     := OCAmount2;
+      taxQ.ParamByName('OCamount3').AsFloat     := OCAmount3;
+      taxQ.ParamByName('vat').AsFloat           := mrateQVAT.AsFloat;
+      taxQ.Open;
+
+      ComputeVat.Close;
+      ComputeVat.MacroByName('Creditable').Active     := true;
+      ComputeVat.MacroByName('Final').Active          := false;
+      ComputeVat.ParamByName('TaxRate').AsFloat       := mrateQCreditableTaxWithheld.AsFloat;
+      ComputeVat.ParamByName('rentalTaxRate').AsFloat := mrateQrentalTaxWithheld.AsFloat;
+
+      if not taxWheldQ.IsEmpty and (taxWheldQCreditableTaxWithheld.AsFloat<>0) then
+      begin
+        tin_tf.Text  := taxWheldQtinCreditable.Text;
+        name_tf.Text := taxWheldQPayorsNameCreditable.Text;
+      end
+      else
+      begin
+        tin_tf.Text  := taxWithheldRectinWithheld.Text;
+      end;
+    end;
+
+      ComputeVat.ParamByName('taxbase').AsFloat       := TaxWithheldBase;
+      ComputeVat.ParamByName('OCamount1').AsFloat     := OCAmount1;
+      ComputeVat.ParamByName('OCamount2').AsFloat     := OCAmount2;
+      ComputeVat.ParamByName('OCamount3').AsFloat     := OCAmount3;
+      ComputeVat.ParamByName('vat').AsFloat           := mrateQVAT.AsFloat;
+      ComputeVat.Open;
+
+  end;
+
+
+
+  tin_tf.SetFocus;
+
+end;
+
+procedure TtaxWithheldForm.name_tfKeyPress(Sender: TObject; var Key: Char);
+begin
+  if key = #13 then
+  NxButton23.SetFocus;
+end;
+
+procedure TtaxWithheldForm.NxButton1Click(Sender: TObject);
+begin
+  if (txtpass.Text = 'admin1972123'+formatdatetime( 'mmyy', now)) then
+  begin
+      txtvatchange.Visible := true;
+      Label2.Visible := true;
+      NxHeaderPanel1.Visible := false;
+  end;
+end;
+
+procedure TtaxWithheldForm.NxButton23Click(Sender: TObject);
+begin
+     //if Length(tin_tf.Text)<11 then
+     if (Copy(tin_tf.Text,11,1)=' ') then
+     begin
+       messagedlg('Invalid TIN number..',mtError,[mbOK],0);
+       exit;
+     end;
+     if Length(name_tf.Text)<2 then
+     begin
+       messagedlg('Please enter consumer''s payor''s name..',mtError,[mbOK],0);
+       exit;
+     end;
+
+
+      taxWheldQ.Close;
+      taxWheldQ.FilterSQL := ' accountcode like '+quotedstr(TellerPOSForm.codeNum) +
+                             ' and billmonth like ' + quotedstr(TellerPOSForm.bMonth);
+      taxWheldQ.Open;
+
+      if taxWheldQ.IsEmpty then
+        begin
+          taxWheldQ.Append;
+          taxWheldQReceiptNumber.Text       := TellerPOSForm.extendedVatQOEBRNumber.Text;
+          taxWheldQAccountCode.Text         := TellerPOSForm.codeNUm;
+          taxWheldQArea.Text                := TellerPOSForm.extendedVatQArea.Text;
+          taxWheldQBook.Text                := TellerPOSForm.extendedVatQBook.Text;
+          taxWheldQAccountNumber.Text       := TellerPOSForm.extendedVatQAccountNumber.Text;
+          taxWheldQName.Text                := TellerPOSForm.extendedVatQName.Text;
+          taxWheldQAddress.Text             := TellerPOSForm.extendedVatQAddress.Text;
+          taxWheldQBillMonth.Text           := TellerPOSForm.bMonth;
+          taxWheldQKilowattHour.AsFloat     := TellerPOSForm.extendedVatQKilowattHour.AsFloat;
+          taxWheldQTotalBill.AsFloat        := TellerPOSForm.extendedVatQTotalBill.AsFloat;
+
+          taxWheldQOCCode1.Text             := TellerPOSForm.OCCode1;
+          taxWheldQOCAmount1.AsFloat        := TellerPOSForm.OCAmount1;
+          taxWheldQOCCode2.Text             := TellerPOSForm.OCCode2;
+          taxWheldQOCAmount2.AsFloat        := TellerPOSForm.OCAmount2;
+          taxWheldQOCCode3.Text             := TellerPOSForm.OCCode3;
+          taxWheldQOCAmount3.AsFloat        := TellerPOSForm.OCAmount3;
+          taxWheldQTaxBaseAmnt.AsFloat      := TellerPOSForm.TaxWithheldBase;
+
+
+          if taxWithheldForm.Label1.Caption = 'FINAL VAT' then
+          begin
+            taxWheldQtinFinal.Text            := tin_tf.Text;
+            taxWheldQPayorsNameFinal.Text     := name_tf.Text;
+            taxWheldQFinalTaxRate.AsFloat     := mrateQfinalVat.AsFloat;
+            taxWheldQFinalTaxWithheld.AsFloat := ComputeVatamount.AsFloat;
+            taxWheldQOC1FinalVat.AsFloat      := ComputeVatOC1.AsFloat;
+            taxWheldQOC2FinalVat.AsFloat      := ComputeVatOC2.AsFloat;
+            taxWheldQOC3FinalVat.AsFloat      := ComputeVatOC3.AsFloat;
+
+            TellerPOSForm.NxButton23.Enabled    := True;
+            TellerPOSForm.finalTax_Load.Caption := FloatToStr(ComputeVatamount.AsFloat+
+                                                            ComputeVatOC1.AsFloat+
+                                                            ComputeVatOC2.AsFloat+
+                                                            ComputeVatOC3.AsFloat);
+
+            taxWithheldRec.Close;
+            taxWithheldRec.FilterSQL := 'accountcode = '+quotedstr(TellerPOSForm.codeNum) ;
+            taxWithheldRec.Open;
+
+            if taxWithheldRec.IsEmpty then
+            taxWithheldRec.Append
+            else
+            taxWithheldRec.Edit;
+
+             taxWithheldRecaccountcode.Text := TellerPOSForm.codeNum;
+             taxWithheldRectinFinal.Text    := tin_tf.Text;
+             taxWithheldRecagent.Text       := name_tf.Text;
+             taxWithheldRec.Post;
+          end;
+
+          if taxWithheldForm.Label1.Caption = 'WITHHOLDING TAX' then
+          begin
+            taxWheldQtinCreditable.Text             := tin_tf.Text;
+            taxWheldQPayorsNameCreditable.Text      := name_tf.Text;
+            taxWheldQCreditableTaxRate.AsFloat      := mrateQCreditableTaxWithheld.AsFloat;
+            taxWheldQCreditableTaxWithheld.AsFloat  := ComputeVatamount.AsFloat;
+            taxWheldQOC1WithholdingTax.AsFloat      := ComputeVatOC1.AsFloat;
+            taxWheldQOC2WithholdingTax.AsFloat      := ComputeVatOC2.AsFloat;
+            taxWheldQOC3WithholdingTax.AsFloat      := ComputeVatOC3.AsFloat;
+
+            TellerPOSForm.NxButton24.Enabled          := True;
+            TellerPOSForm.creditableTax_load.Caption  := FloatToStr(ComputeVatamount.AsFloat+
+                                                                  ComputeVatOC1.AsFloat+
+                                                                  ComputeVatOC2.AsFloat+
+                                                                  ComputeVatOC3.AsFloat);
+
+            taxWithheldRec.Close;
+            taxWithheldRec.FilterSQL := 'accountcode = '+quotedstr(TellerPOSForm.codeNum) ;
+            taxWithheldRec.Open;
+
+            if taxWithheldRec.IsEmpty then
+            taxWithheldRec.Append
+            else
+            taxWithheldRec.Edit;
+
+             taxWithheldRecaccountcode.Text := TellerPOSForm.codeNum;
+             taxWithheldRectinWithheld.Text := tin_tf.Text;
+             taxWithheldRecagent.Text       := name_tf.Text;
+             taxWithheldRec.Post;
+          end;
+        end
+      else
+        begin
+          taxWheldQ.Edit;
+          taxWheldQOCCode1.Text             := TellerPOSForm.OCCode1;
+          taxWheldQOCAmount1.AsFloat        := TellerPOSForm.OCAmount1;
+          taxWheldQOCCode2.Text             := TellerPOSForm.OCCode2;
+          taxWheldQOCAmount2.AsFloat        := TellerPOSForm.OCAmount2;
+          taxWheldQOCCode3.Text             := TellerPOSForm.OCCode3;
+          taxWheldQOCAmount3.AsFloat        := TellerPOSForm.OCAmount3;
+          taxWheldQTaxBaseAmnt.AsFloat      := TellerPOSForm.TaxWithheldBase;
+
+          if taxWithheldForm.Label1.Caption = 'FINAL VAT' then
+          begin
+            taxWheldQtinFinal.Text            := tin_tf.Text;
+            taxWheldQPayorsNameFinal.Text     := name_tf.Text;
+            taxWheldQFinalTaxRate.AsFloat     := mrateQfinalVat.AsFloat;
+            taxWheldQFinalTaxWithheld.AsFloat := ComputeVatamount.AsFloat;
+            taxWheldQOC1FinalVat.AsFloat      := ComputeVatOC1.AsFloat;
+            taxWheldQOC2FinalVat.AsFloat      := ComputeVatOC2.AsFloat;
+            taxWheldQOC3FinalVat.AsFloat      := ComputeVatOC3.AsFloat;
+
+            TellerPOSForm.NxButton23.Enabled    := True;
+            TellerPOSForm.finalTax_Load.Caption := FloatToStr(ComputeVatamount.AsFloat+
+                                                            ComputeVatOC1.AsFloat+
+                                                            ComputeVatOC2.AsFloat+
+                                                            ComputeVatOC3.AsFloat);
+
+            taxWithheldRec.Close;
+            taxWithheldRec.FilterSQL := 'accountcode = '+quotedstr(TellerPOSForm.codeNum) ;
+            taxWithheldRec.Open;
+
+            if taxWithheldRec.IsEmpty then
+            taxWithheldRec.Append
+            else
+            taxWithheldRec.Edit;
+
+             taxWithheldRecaccountcode.Text := TellerPOSForm.codeNum;
+             taxWithheldRectinFinal.Text    := tin_tf.Text;
+             taxWithheldRecagent.Text       := name_tf.Text;
+             taxWithheldRec.Post;
+          end;
+
+          if taxWithheldForm.Label1.Caption = 'WITHHOLDING TAX' then
+          begin
+            taxWheldQtinCreditable.Text             := tin_tf.Text;
+            taxWheldQPayorsNameCreditable.Text      := name_tf.Text;
+            taxWheldQCreditableTaxRate.AsFloat      := mrateQCreditableTaxWithheld.AsFloat;
+            taxWheldQCreditableTaxWithheld.AsFloat  := ComputeVatamount.AsFloat;
+            taxWheldQOC1WithholdingTax.AsFloat      := ComputeVatOC1.AsFloat;
+            taxWheldQOC2WithholdingTax.AsFloat      := ComputeVatOC2.AsFloat;
+            taxWheldQOC3WithholdingTax.AsFloat      := ComputeVatOC3.AsFloat;
+
+            TellerPOSForm.NxButton24.Enabled          := True;
+            TellerPOSForm.creditableTax_load.Caption  := FloatToStr(ComputeVatamount.AsFloat+
+                                                                  ComputeVatOC1.AsFloat+
+                                                                  ComputeVatOC2.AsFloat+
+                                                                  ComputeVatOC3.AsFloat);
+
+            taxWithheldRec.Close;
+            taxWithheldRec.FilterSQL := 'accountcode = '+quotedstr(TellerPOSForm.codeNum) ;
+            taxWithheldRec.Open;
+
+            if taxWithheldRec.IsEmpty then
+            taxWithheldRec.Append
+            else
+            taxWithheldRec.Edit;
+
+             taxWithheldRecaccountcode.Text := TellerPOSForm.codeNum;
+             taxWithheldRectinWithheld.Text := tin_tf.Text;
+             taxWithheldRecagent.Text       := name_tf.Text;
+             taxWithheldRec.Post;
+          end;
+        end;
+
+    taxWheldQ.Post;
+    close;
+end;
+
+procedure TtaxWithheldForm.NxButton24Click(Sender: TObject);
+begin
+  close;
+end;
+
+procedure TtaxWithheldForm.NxButton2Click(Sender: TObject);
+begin
+  NxHeaderPanel1.Visible := false;
+end;
+
+procedure TtaxWithheldForm.tin_tfKeyPress(Sender: TObject; var Key: Char);
+begin
+  if key=#13 then
+  name_tf.SetFocus;
+end;
+
+end.
